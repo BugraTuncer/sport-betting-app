@@ -11,6 +11,11 @@ import {
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import type { Route } from './+types/root';
 import './app.css';
+import { store, type AppDispatch, type RootState } from './store';
+import Button from './components/Button';
+import { initAuth, logout } from './store/slices/authSlice';
+
+store.dispatch(initAuth());
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -27,6 +32,11 @@ export const links: Route.LinksFunction = () => [
 
 function AppHeader() {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const user = useSelector((state: RootState) => state.auth.user);
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   return (
     <div className="bg-primary h-16 w-full">
@@ -34,6 +44,14 @@ function AppHeader() {
         <p className="text-white text-2xl font-bold cursor-pointer" onClick={() => navigate('/')}>
           Sports Betting App
         </p>
+        <div className="flex items-center gap-4">
+          <p className="text-white text-sm">{user?.email}</p>
+          {user ? (
+            <Button onClick={() => handleLogout()}>Logout</Button>
+          ) : (
+            <Button onClick={() => navigate('/login')}>Login</Button>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -69,7 +87,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <Layout>
-      <AppContent />
+      <Provider store={store}>
+        <AppContent />
+      </Provider>
     </Layout>
   );
 }
@@ -80,10 +100,10 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   let stack: string | undefined;
 
   if (isRouteErrorResponse(error)) {
-    message = error.status === 404 ? 'Üzgünüz, bu sayfaya şu an ulaşılamıyor.' : 'Error';
+    message = error.status === 404 ? 'Sorry, this page is not available.' : 'Error';
     details =
       error.status === 404
-        ? 'Tıkladığın bağlantı bozuk olabilir veya sayfa kaldırılmış olabilir.'
+        ? 'The link you clicked may be broken or the page may have been removed.'
         : error.statusText || details;
   } else if (import.meta.env.DEV && error && error instanceof Error) {
     details = error.message;
@@ -96,7 +116,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
       <p className="text-gray-500">{details}</p>
       <img src="404-page.png" alt="404" className="w-1/4" />
       <Link to="/" className="bg-primary text-white px-4 py-2 rounded-md">
-        Anasayfaya dön
+        Go to home
       </Link>
       {stack && (
         <pre className="w-full p-4 overflow-x-auto">

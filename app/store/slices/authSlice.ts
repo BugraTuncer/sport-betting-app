@@ -1,0 +1,124 @@
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+} from 'firebase/auth';
+import { auth } from '../../config/firebase';
+
+interface AuthState {
+  user: any | null;
+  loading: boolean;
+  error: string | null;
+}
+
+const initialState: AuthState = {
+  user: null,
+  loading: true,
+  error: null,
+};
+
+export const signUp = createAsyncThunk(
+  'auth/signUp',
+  async ({ email, password }: { email: string; password: string }, { rejectWithValue }) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      return userCredential.user;
+    } catch (error) {
+      return rejectWithValue(error instanceof Error ? error.message : 'Bir hata oluştu');
+    }
+  }
+);
+
+export const signIn = createAsyncThunk(
+  'auth/signIn',
+  async ({ email, password }: { email: string; password: string }, { rejectWithValue }) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      return userCredential.user;
+    } catch (error) {
+      return rejectWithValue(error instanceof Error ? error.message : 'Bir hata oluştu');
+    }
+  }
+);
+
+export const logout = createAsyncThunk('auth/logout', async (_, { rejectWithValue }) => {
+  try {
+    await signOut(auth);
+  } catch (error) {
+    return rejectWithValue(error instanceof Error ? error.message : 'Bir hata oluştu');
+  }
+});
+
+export const initAuth = createAsyncThunk('auth/init', (_, { dispatch }) => {
+  return new Promise<void>((resolve) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      dispatch(setUser(user));
+      resolve();
+    });
+    return unsubscribe;
+  });
+});
+
+const authSlice = createSlice({
+  name: 'auth',
+  initialState,
+  reducers: {
+    setUser: (state, action) => {
+      state.user = action.payload;
+      state.loading = false;
+    },
+    clearError: (state) => {
+      state.error = null;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(signUp.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(signUp.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.loading = false;
+      })
+      .addCase(signUp.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(signIn.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(signIn.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.loading = false;
+      })
+      .addCase(signIn.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(logout.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.user = null;
+        state.loading = false;
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(initAuth.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(initAuth.fulfilled, (state) => {
+        state.loading = false;
+      });
+  },
+});
+
+export const { setUser, clearError } = authSlice.actions;
+export default authSlice.reducer;

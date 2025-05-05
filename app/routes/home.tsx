@@ -1,3 +1,4 @@
+import ProtectedRoute from '~/components/ProtectedRoute';
 import type { Route } from './+types/home';
 
 export function meta({}: Route.MetaArgs) {
@@ -5,5 +6,9 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
-  return <div>Sports Betting App</div>;
+  return (
+    <ProtectedRoute>
+      <div>Sports Betting App</div>
+    </ProtectedRoute>
+  );
 }
