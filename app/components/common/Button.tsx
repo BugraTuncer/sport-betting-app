@@ -5,14 +5,18 @@ interface ButtonProps {
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
   className?: string;
+  style?: React.CSSProperties;
 }
 
-const Button = ({ children, onClick, disabled, className }: ButtonProps) => {
+const Button = ({ children, onClick, disabled, className, style }: ButtonProps) => {
   return (
     <button
       onClick={onClick}
       disabled={disabled}
-      className="bg-primary text-white px-4 py-2 rounded-md cursor-pointer w-full disabled:opacity-50 disabled:cursor-not-allowed"
+      style={style}
+      className={
+        className ? className : 'bg-primary text-white px-4 py-2 rounded-md cursor-pointer w-full'
+      }
     >
       {children}
     </button>

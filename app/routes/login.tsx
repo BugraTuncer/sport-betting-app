@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signIn } from '../store/slices/authSlice';
 import type { RootState, AppDispatch } from '../store';
-import Button from '~/components/Button';
+import Button from '~/components/common/Button';
 
 export default function Login() {
   const [email, setEmail] = useState('');

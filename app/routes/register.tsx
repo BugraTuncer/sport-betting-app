@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signUp } from '../store/slices/authSlice';
 import type { RootState, AppDispatch } from '../store';
-import Button from '~/components/Button';
+import Button from '~/components/common/Button';
 
 export default function Register() {
   const [email, setEmail] = useState('');

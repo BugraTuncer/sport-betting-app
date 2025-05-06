@@ -12,7 +12,7 @@ import { Provider, useDispatch, useSelector } from 'react-redux';
 import type { Route } from './+types/root';
 import './app.css';
 import { store, type AppDispatch, type RootState } from './store';
-import Button from './components/Button';
+import Button from './components/common/Button';
 import { initAuth, logout } from './store/slices/authSlice';
 
 store.dispatch(initAuth());
