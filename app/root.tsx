@@ -9,13 +9,13 @@ import {
   useNavigate,
 } from 'react-router';
 import { Provider, useDispatch, useSelector } from 'react-redux';
+import { store, type AppDispatch, type RootState } from './store';
+import { initAuth, logout } from './store/slices/authSlice';
 import type { Route } from './+types/root';
 import './app.css';
-import { store, type AppDispatch, type RootState } from './store';
+import type { User } from 'firebase/auth';
 import Button from './components/common/Button';
-import { initAuth, logout } from './store/slices/authSlice';
-
-store.dispatch(initAuth());
+import { useEffect } from 'react';
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -32,24 +32,38 @@ export const links: Route.LinksFunction = () => [
 
 function AppHeader() {
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.auth.user);
+  const dispatch = useDispatch<AppDispatch>();
+
   const handleLogout = () => {
     dispatch(logout());
   };
 
   return (
     <div className="bg-primary h-16 w-full">
-      <div className="container mx-auto flex items-center justify-between h-full">
-        <p className="text-white text-2xl font-bold cursor-pointer" onClick={() => navigate('/')}>
-          Sports Betting App
+      <div className="container mx-auto flex items-center justify-between h-full px-4">
+        <p
+          className="text-white text-xl sm:text-xl font-bold cursor-pointer"
+          onClick={() => navigate('/')}
+        >
+          Sports Betting
         </p>
-        <div className="flex items-center gap-4">
-          <p className="text-white text-sm">{user?.email}</p>
+        <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
+          <p className="text-white text-xs sm:text-sm">{user?.email?.split('@')[0]}</p>
           {user ? (
-            <Button onClick={() => handleLogout()}>Logout</Button>
+            <Button
+              onClick={() => handleLogout()}
+              className="text-xs sm:text-sm text-white rounded-2xl border border-white px-2 py-1 cursor-pointer"
+            >
+              Logout
+            </Button>
           ) : (
-            <Button onClick={() => navigate('/login')}>Login</Button>
+            <Button
+              onClick={() => navigate('/login')}
+              className="text-xs sm:text-sm text-white rounded-2xl border border-white px-2 py-1 cursor-pointer"
+            >
+              Login
+            </Button>
           )}
         </div>
       </div>
@@ -58,6 +72,12 @@ function AppHeader() {
 }
 
 function AppContent() {
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(initAuth());
+  }, [dispatch]);
+
   return (
     <>
       <AppHeader />
@@ -116,7 +136,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
       <p className="text-gray-500">{details}</p>
       <img src="404-page.png" alt="404" className="w-1/4" />
       <Link to="/" className="bg-primary text-white px-4 py-2 rounded-md">
-        Go to home
+        Go To Home
       </Link>
       {stack && (
         <pre className="w-full p-4 overflow-x-auto">

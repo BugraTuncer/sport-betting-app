@@ -1,14 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { signUp } from '../store/slices/authSlice';
+import { clearError, signUp } from '../store/slices/authSlice';
 import type { RootState, AppDispatch } from '../store';
 import Button from '~/components/common/Button';
 
 export default function Register() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
   const dispatch = useDispatch<AppDispatch>();
   const { error, loading } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
@@ -16,18 +18,22 @@ export default function Register() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
+    if (formData.password !== formData.confirmPassword) {
       alert('Passwords do not match!');
       return;
     }
 
     try {
-      await dispatch(signUp({ email, password })).unwrap();
+      await dispatch(signUp(formData)).unwrap();
       navigate('/');
     } catch (err) {
       console.error(err);
     }
   };
+
+  useEffect(() => {
+    dispatch(clearError());
+  }, []);
 
   return (
     <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -51,8 +57,8 @@ export default function Register() {
                 required
                 className="w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:border-primary focus:outline-none rounded-md"
                 placeholder="E-mail"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               />
             </div>
             <div>
@@ -67,8 +73,8 @@ export default function Register() {
                 required
                 className="w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:border-primary focus:outline-none rounded-md"
                 placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               />
             </div>
             <div>
@@ -83,8 +89,8 @@ export default function Register() {
                 required
                 className="w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:border-primary focus:outline-none rounded-md"
                 placeholder="Confirm Password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                value={formData.confirmPassword}
+                onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
               />
             </div>
           </div>
@@ -93,7 +99,7 @@ export default function Register() {
 
           <div className="flex justify-center w-full">
             <Button onClick={handleSubmit} disabled={loading}>
-              {loading ? 'Registering...' : 'Register'}
+              {loading ? 'Loading...' : 'Register'}
             </Button>
           </div>
         </form>

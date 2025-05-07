@@ -1,26 +1,33 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { signIn } from '../store/slices/authSlice';
+import { clearError, signIn } from '../store/slices/authSlice';
 import type { RootState, AppDispatch } from '../store';
 import Button from '~/components/common/Button';
+import Input from '~/components/common/Input';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const dispatch = useDispatch<AppDispatch>();
   const { error, loading } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await dispatch(signIn({ email, password })).unwrap();
-      navigate('/');
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent | React.MouseEvent) => {
+      e.preventDefault();
+      try {
+        await dispatch(signIn(formData)).unwrap();
+        navigate('/');
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    [dispatch, formData, navigate]
+  );
+
+  useEffect(() => {
+    dispatch(clearError());
+  }, []);
 
   return (
     <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -32,25 +39,25 @@ export default function Login() {
           <div className="flex flex-col gap-4">
             <div>
               <label htmlFor="email-address" className="sr-only">
-                E-mail
+                Email address
               </label>
-              <input
+              <Input
                 id="email-address"
                 name="email"
                 type="email"
                 autoComplete="email"
                 required
                 className="w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:border-primary focus:outline-none rounded-md"
-                placeholder="E-mail"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email address"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               />
             </div>
             <div>
               <label htmlFor="password" className="sr-only">
                 Password
               </label>
-              <input
+              <Input
                 id="password"
                 name="password"
                 type="password"
@@ -58,8 +65,8 @@ export default function Login() {
                 required
                 className="w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:border-primary focus:outline-none rounded-md"
                 placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               />
             </div>
           </div>
@@ -68,9 +75,9 @@ export default function Login() {
 
           <div className="flex flex-col gap-4">
             <Button disabled={loading} onClick={handleSubmit}>
-              {loading ? 'Logging in...' : 'Login'}
+              {loading ? 'Loading...' : 'Login'}
             </Button>
-            <Button onClick={() => navigate('/register')}>Don't have an account? Click here</Button>
+            <Button onClick={() => navigate('/register')}>Dont have an account?</Button>
           </div>
         </form>
       </div>

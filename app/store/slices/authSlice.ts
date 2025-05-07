@@ -26,7 +26,7 @@ export const signUp = createAsyncThunk(
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       return userCredential.user;
     } catch (error) {
-      return rejectWithValue(error instanceof Error ? error.message : 'Bir hata oluştu');
+      return rejectWithValue(error instanceof Error ? error.message : 'An error occurred');
     }
   }
 );
@@ -38,7 +38,7 @@ export const signIn = createAsyncThunk(
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       return userCredential.user;
     } catch (error) {
-      return rejectWithValue(error instanceof Error ? error.message : 'Bir hata oluştu');
+      return rejectWithValue(error instanceof Error ? error.message : 'An error occurred');
     }
   }
 );
@@ -47,7 +47,7 @@ export const logout = createAsyncThunk('auth/logout', async (_, { rejectWithValu
   try {
     await signOut(auth);
   } catch (error) {
-    return rejectWithValue(error instanceof Error ? error.message : 'Bir hata oluştu');
+    return rejectWithValue(error instanceof Error ? error.message : 'An error occurred');
   }
 });
 

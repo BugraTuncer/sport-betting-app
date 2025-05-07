@@ -2,8 +2,9 @@ import type { Match } from '~/models/matches';
 import LeagueCard from './LeagueCard';
 import type { Bet } from '~/models/bets';
 import { useState, useMemo, useCallback } from 'react';
-import { useDebouncedValue } from '~/hooks/useDebouncedValue';
 import SearchBar from '../common/SearchBar';
+import { useDebouncedValue } from '~/hooks/useDebouncedValue';
+import { motion } from 'framer-motion';
 
 interface MatchesByLeague {
   [league: string]: Match[];
@@ -38,22 +39,46 @@ const MatchList = ({ matches, bets }: { matches: Match[]; bets: Bet[] }) => {
   }, [filteredMatches]);
 
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
+    >
       <div className="px-5 mb-5">
         <SearchBar searchTerm={searchTerm} setSearchTerm={handleSearchChange} />
       </div>
-      <div className="font-sans">
-        {Object.entries(matchesByLeague).map(([league, leagueMatches]) => (
-          <LeagueCard
-            key={league}
-            leagueTitle={league}
-            matches={leagueMatches}
-            bets={bets}
-            commenceTime={leagueMatches[0].commence_time}
-          />
-        ))}
-      </div>
-    </div>
+      <motion.div
+        className="font-sans"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.6,
+          ease: 'easeOut',
+          staggerChildren: 0.1,
+        }}
+      >
+        {Object.entries(matchesByLeague).length > 0 ? (
+          Object.entries(matchesByLeague).map(([league, leagueMatches]) => (
+            <motion.div
+              key={league}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <LeagueCard
+                key={league}
+                leagueTitle={league}
+                matches={leagueMatches}
+                bets={bets}
+                commenceTime={leagueMatches[0].commence_time}
+              />
+            </motion.div>
+          ))
+        ) : (
+          <div className="text-center text-gray-500">No matches found</div>
+        )}
+      </motion.div>
+    </motion.div>
   );
 };
 

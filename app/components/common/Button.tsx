@@ -15,7 +15,9 @@ const Button = ({ children, onClick, disabled, className, style }: ButtonProps) 
       disabled={disabled}
       style={style}
       className={
-        className ? className : 'bg-primary text-white px-4 py-2 rounded-md cursor-pointer w-full'
+        className
+          ? className
+          : 'bg-primary text-white px-4 py-2 rounded-md cursor-pointer w-full disabled:opacity-50 disabled:cursor-not-allowed'
       }
     >
       {children}
