@@ -1,18 +1,22 @@
 import React from 'react';
 import { getMatchResultLabel } from '~/utils/matchUtils';
 import Button from '../common/Button';
-import { removeFromBasket } from '~/store/slices/betSlice';
 import type { BetSlice } from '~/models/bets';
-import type { Dispatch } from '@reduxjs/toolkit';
+import DeleteIcon from 'public/icons/DeleteIcon';
 
-const BetBasketList = ({ bet, dispatch }: { bet: BetSlice; dispatch: Dispatch }) => {
+interface BetBasketListProps {
+  bet: BetSlice;
+  onRemove: (eventId: string) => void;
+}
+
+const BetBasketList: React.FC<BetBasketListProps> = ({ bet, onRemove }) => {
   return (
     <div key={bet.eventId} className="bg-gray-50 p-3 rounded-lg relative">
       <Button
-        onClick={() => dispatch(removeFromBasket(bet.eventId))}
+        onClick={() => onRemove(bet.eventId)}
         className="absolute top-2 right-2 text-gray-400 hover:text-red-500 cursor-pointer"
       >
-        ✕
+        <DeleteIcon width={20} height={20} color="red" />
       </Button>
       <div className="text-sm">
         {bet.home_team} - {bet.away_team}

@@ -1,3 +1,5 @@
+import type { Bet } from './bets';
+
 export interface Outcome {
   name: string;
   price: number;
@@ -24,4 +26,18 @@ export interface Match {
   home_team: string;
   away_team: string;
   bookmakers: Bookmaker[];
+}
+
+export interface MatchCardContainerProps {
+  event: Match;
+  bets: Bet[];
+}
+
+export interface MatchesByLeague {
+  [league: string]: Match[];
+}
+
+export interface MatchListContainerProps {
+  matches: Match[];
+  bets: Bet[];
 }

@@ -6,3 +6,8 @@ export interface Sport {
   active: boolean;
   has_outrights: boolean;
 }
+
+export interface SportNavProps {
+  onSportSelect: (sport: string) => void;
+  selectedSport: string;
+}

@@ -9,15 +9,16 @@ import {
   useNavigate,
 } from 'react-router';
 import { Provider, useDispatch, useSelector } from 'react-redux';
-import { store, type AppDispatch, type RootState } from './store';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor, type AppDispatch, type RootState } from './store';
 import { initAuth, logout } from './store/slices/authSlice';
 import type { Route } from './+types/root';
 import './app.css';
-import type { User } from 'firebase/auth';
 import Button from './components/common/Button';
 import { useEffect } from 'react';
 
 export const links: Route.LinksFunction = () => [
+  { rel: 'icon', type: 'image/x-icon', href: '/favicon1.ico' },
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
   {
     rel: 'preconnect',
@@ -106,11 +107,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <Layout>
-      <Provider store={store}>
-        <AppContent />
-      </Provider>
-    </Layout>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <Layout>
+          <AppContent />
+        </Layout>
+      </PersistGate>
+    </Provider>
   );
 }
 

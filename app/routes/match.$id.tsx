@@ -86,7 +86,7 @@ export default function MatchDetail() {
               <p className="text-lg font-semibold p-3">Maç Sonucu</p>
               <div className="flex gap-2 p-3">
                 <OutcomeBox
-                  label="MS 1"
+                  label="MR 1"
                   outcome={homeOutcome}
                   selected={!!homeOutcome && isSelected(bets, matchInfos.id, homeOutcome.name)}
                   onClick={() =>
@@ -100,7 +100,7 @@ export default function MatchDetail() {
                   }
                 />
                 <OutcomeBox
-                  label="MS X"
+                  label="MR X"
                   outcome={drawOutcome}
                   selected={!!drawOutcome && isSelected(bets, matchInfos.id, drawOutcome.name)}
                   onClick={() =>
@@ -114,7 +114,7 @@ export default function MatchDetail() {
                   }
                 />
                 <OutcomeBox
-                  label="MS 2"
+                  label="MR 2"
                   outcome={awayOutcome}
                   selected={!!awayOutcome && isSelected(bets, matchInfos.id, awayOutcome.name)}
                   onClick={() =>

@@ -6,6 +6,7 @@ import {
   onAuthStateChanged,
 } from 'firebase/auth';
 import { auth } from '../../config/firebase';
+import { clearBasket } from './betSlice';
 
 interface AuthState {
   user: any | null;
@@ -43,11 +44,12 @@ export const signIn = createAsyncThunk(
   }
 );
 
-export const logout = createAsyncThunk('auth/logout', async (_, { rejectWithValue }) => {
+export const logout = createAsyncThunk('auth/logout', async (_, { dispatch, rejectWithValue }) => {
   try {
     await signOut(auth);
+    dispatch(clearBasket());
   } catch (error) {
-    return rejectWithValue(error instanceof Error ? error.message : 'An error occurred');
+    return rejectWithValue(error instanceof Error ? error.message : 'Bir hata oluştu');
   }
 });
 

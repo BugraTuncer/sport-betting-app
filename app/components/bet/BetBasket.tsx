@@ -1,30 +1,37 @@
-import React, { useMemo, useState } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useSelector, useDispatch } from 'react-redux';
-import type { RootState } from '~/store';
-import { clearBasket } from '~/store/slices/betSlice';
+import type { BetSlice } from '~/models/bets';
 import Button from '../common/Button';
 import DeleteIcon from 'public/icons/DeleteIcon';
 import BetBasketList from './BetBasketList';
 import EmptyBetBasket from './EmptyBasketList';
 import ConfirmationModal from '../common/ConfirmationModal';
 
-const BetBasket: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const bets = useSelector((state: RootState) => state.bet.basket);
-  const dispatch = useDispatch();
+interface BetBasketProps {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+  showConfirmModal: boolean;
+  setShowConfirmModal: (show: boolean) => void;
+  bets: BetSlice[];
+  totalOdds: number;
+  onClearBasket: () => void;
+  onRemoveBet: (eventId: string) => void;
+  onUndo: () => void;
+  undoMatch: { bet: BetSlice; timer: NodeJS.Timeout } | null;
+}
 
-  const totalOdds = useMemo(() => {
-    return bets.reduce((acc, curr) => acc * curr.outcome.price, 1);
-  }, [bets]);
-
-  const handleClearBasket = () => {
-    dispatch(clearBasket());
-    setIsOpen(false);
-    setShowConfirmModal(false);
-  };
-
+const BetBasket: React.FC<BetBasketProps> = ({
+  isOpen,
+  setIsOpen,
+  showConfirmModal,
+  setShowConfirmModal,
+  bets,
+  totalOdds,
+  onClearBasket,
+  onRemoveBet,
+  onUndo,
+  undoMatch,
+}) => {
   return (
     <>
       <div className="fixed bottom-4 right-1 sm:right-4 z-50">
@@ -45,6 +52,20 @@ const BetBasket: React.FC = () => {
               className="absolute bottom-full right-0 mb-2 w-95.5 bg-white rounded-lg shadow-2xl border border-gray-300 "
             >
               <div className="p-4">
+                {undoMatch && (
+                  <div className="bg-gray-800 text-white px-4 py-2 rounded-md flex justify-between items-center mb-4">
+                    <p className="text-sm">
+                      Match {undoMatch.bet.home_team} - {undoMatch.bet.away_team} has been removed
+                      from your coupon.
+                    </p>
+                    <Button
+                      onClick={onUndo}
+                      className="bg-gray-800  text-primary px-4 py-2 border-none rounded-md whitespace-nowrap cursor-pointer"
+                    >
+                      Undo
+                    </Button>
+                  </div>
+                )}
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="font-semibold">Bet Details</h3>
                   <Button
@@ -60,7 +81,7 @@ const BetBasket: React.FC = () => {
                     <EmptyBetBasket setIsOpen={setIsOpen} />
                   ) : (
                     bets.map((bet) => (
-                      <BetBasketList key={bet.eventId} bet={bet} dispatch={dispatch} />
+                      <BetBasketList key={bet.eventId} bet={bet} onRemove={onRemoveBet} />
                     ))
                   )}
                 </div>
@@ -80,7 +101,7 @@ const BetBasket: React.FC = () => {
 
                     <div className="flex justify-around items-center mt-5">
                       <div onClick={() => setShowConfirmModal(true)} className="cursor-pointer">
-                        <DeleteIcon width={30} height={30} />
+                        <DeleteIcon width={30} height={30} color="black" />
                       </div>
                       <Button
                         style={{ marginTop: '10px', width: '200px' }}
@@ -100,7 +121,7 @@ const BetBasket: React.FC = () => {
       <ConfirmationModal
         isOpen={showConfirmModal}
         onClose={() => setShowConfirmModal(false)}
-        onConfirm={handleClearBasket}
+        onConfirm={onClearBasket}
         title="Delete Bets"
         message="Are you sure you want to delete all bets?"
       />

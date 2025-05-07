@@ -1,16 +1,10 @@
 import { useDispatch } from 'react-redux';
 import { addToBasket, removeFromBasket } from '~/store/slices/betSlice';
-import type { Match, Outcome } from '~/models/matches';
-import { MatchCard } from './MatchCard';
+import type { Match, MatchCardContainerProps, Outcome } from '~/models/matches';
+import { MatchCard } from '~/components/match/MatchCard';
 import type { Bet } from '~/models/bets';
-import { useMemo } from 'react';
 
-type MatchCardContainerProps = {
-  event: Match;
-  bets: Bet[];
-};
-
-export const MatchCardContainer = ({ event, bets }: MatchCardContainerProps) => {
+export default function MatchCardContainer({ event, bets }: MatchCardContainerProps) {
   const dispatch = useDispatch();
 
   const handleSelectOutcome = (
@@ -29,4 +23,4 @@ export const MatchCardContainer = ({ event, bets }: MatchCardContainerProps) => 
   };
 
   return <MatchCard event={event} bets={bets} onSelectOutcome={handleSelectOutcome} />;
-};
+}

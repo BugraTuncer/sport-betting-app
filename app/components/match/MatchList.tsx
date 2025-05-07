@@ -1,43 +1,13 @@
-import type { Match } from '~/models/matches';
-import LeagueCard from './LeagueCard';
-import type { Bet } from '~/models/bets';
-import { useState, useMemo, useCallback } from 'react';
-import SearchBar from '../common/SearchBar';
-import { useDebouncedValue } from '~/hooks/useDebouncedValue';
 import { motion } from 'framer-motion';
+import SearchBar from '../common/SearchBar';
 
-interface MatchesByLeague {
-  [league: string]: Match[];
+interface MatchListProps {
+  leagueCards: React.ReactNode[];
+  searchTerm: string;
+  onSearchChange: (value: string) => void;
 }
 
-const MatchList = ({ matches, bets }: { matches: Match[]; bets: Bet[] }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const debouncedSearchTerm = useDebouncedValue(searchTerm, 300);
-
-  const handleSearchChange = useCallback((value: string) => {
-    setSearchTerm(value);
-  }, []);
-
-  const filteredMatches = useMemo(() => {
-    return matches.filter(
-      (match) =>
-        match.sport_title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-        match.home_team.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-        match.away_team.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
-    );
-  }, [matches, debouncedSearchTerm]);
-
-  const matchesByLeague = useMemo(() => {
-    return filteredMatches.reduce<MatchesByLeague>((acc, match) => {
-      const league = match.sport_title;
-      if (!acc[league]) {
-        acc[league] = [];
-      }
-      acc[league].push(match);
-      return acc;
-    }, {});
-  }, [filteredMatches]);
-
+const MatchList = ({ leagueCards, searchTerm, onSearchChange }: MatchListProps) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -45,7 +15,7 @@ const MatchList = ({ matches, bets }: { matches: Match[]; bets: Bet[] }) => {
       transition={{ duration: 0.5, ease: 'easeOut' }}
     >
       <div className="px-5 mb-5">
-        <SearchBar searchTerm={searchTerm} setSearchTerm={handleSearchChange} />
+        <SearchBar searchTerm={searchTerm} setSearchTerm={onSearchChange} />
       </div>
       <motion.div
         className="font-sans"
@@ -57,23 +27,8 @@ const MatchList = ({ matches, bets }: { matches: Match[]; bets: Bet[] }) => {
           staggerChildren: 0.1,
         }}
       >
-        {Object.entries(matchesByLeague).length > 0 ? (
-          Object.entries(matchesByLeague).map(([league, leagueMatches]) => (
-            <motion.div
-              key={league}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <LeagueCard
-                key={league}
-                leagueTitle={league}
-                matches={leagueMatches}
-                bets={bets}
-                commenceTime={leagueMatches[0].commence_time}
-              />
-            </motion.div>
-          ))
+        {leagueCards.length > 0 ? (
+          leagueCards
         ) : (
           <div className="text-center text-gray-500">No matches found</div>
         )}

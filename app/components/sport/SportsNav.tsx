@@ -1,10 +1,5 @@
-import { useState } from 'react';
 import Button from '../common/Button';
-
-interface SportNavProps {
-  onSportSelect: (sport: string) => void;
-  selectedSport: string;
-}
+import type { SportNavProps } from '~/models/sports';
 
 const sports = [
   { id: 'soccer', title: 'Football', icon: '⚽' },

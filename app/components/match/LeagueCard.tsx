@@ -1,13 +1,5 @@
-import type { Match } from '~/models/matches';
-import { MatchCardContainer } from './MatchCardContainer';
-import type { Bet } from '~/models/bets';
-
-type LeagueCardProps = {
-  leagueTitle: string;
-  matches: Match[];
-  bets: Bet[];
-  commenceTime: string;
-};
+import MatchCardContainer from '~/containers/match/MatchCardContainer';
+import type { LeagueCardProps } from '~/models/league';
 
 const LeagueCard = ({ commenceTime, leagueTitle, matches, bets }: LeagueCardProps) => {
   return (

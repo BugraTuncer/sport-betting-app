@@ -3,7 +3,7 @@ import type { Route } from './+types/home';
 import type { Match } from '~/models/matches';
 import { useSelector } from 'react-redux';
 import type { RootState } from '~/store';
-import MatchList from '~/components/match/MatchList';
+import MatchListContainer from '~/containers/match/MatchListContainer';
 import ProtectedRoute from '~/components/common/ProtectedRoute';
 import MainLayout from '~/components/layout/MainLayout';
 import SportsNav from '~/components/sport/SportsNav';
@@ -30,7 +30,11 @@ export default function Home() {
       <MainLayout>
         <SportsNav onSportSelect={setSelectedSport} selectedSport={selectedSport} />
         <div className="container mx-auto p-2 sm:p-4">
-          {loading ? <LoadingSpinner /> : <MatchList bets={bets} matches={filteredMatches} />}
+          {loading ? (
+            <LoadingSpinner />
+          ) : (
+            <MatchListContainer matches={filteredMatches} bets={bets} />
+          )}
         </div>
       </MainLayout>
     </ProtectedRoute>

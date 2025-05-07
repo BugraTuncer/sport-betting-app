@@ -1,5 +1,5 @@
 import React from 'react';
-import BetBasket from '../bet/BetBasket';
+import BetBasketContainer from '~/containers/bet/BetBasketContainer';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -9,7 +9,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
     <div className="min-h-screen bg-gray-50">
       {children}
-      <BetBasket />
+      <BetBasketContainer />
     </div>
   );
 };
