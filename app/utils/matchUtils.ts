@@ -49,3 +49,15 @@ export const getMatchResultLabel = (outcomeName: string, home: string, away: str
   if (outcomeName === away) return '2';
   return 'X';
 };
+
+export const getIconBySport = (sport: string) => {
+  if (sport.includes('cricket')) return '🏏';
+  if (sport.includes('soccer')) return '⚽';
+  if (sport.includes('basketball')) return '🏀';
+  if (sport.includes('volleyball')) return '🏐';
+  if (sport.includes('tennis')) return '🎾';
+  if (sport.includes('icehockey')) return '🏒';
+  if (sport.includes('handball')) return '🤾';
+  if (sport.includes('snooker')) return '🎱';
+  return '🎲';
+};

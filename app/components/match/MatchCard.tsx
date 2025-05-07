@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import type { Match, Outcome } from '~/models/matches';
 import { OutcomeBox } from './OutcomeBox';
 import type { Bet } from '~/models/bets';
-import { isSelected, findMatchOutcomes } from '~/utils/matchUtils';
+import { isSelected, findMatchOutcomes, getIconBySport } from '~/utils/matchUtils';
 
 type MatchCardProps = {
   event: Match;
@@ -25,7 +25,7 @@ export const MatchCard = ({ event, bets, onSelectOutcome }: MatchCardProps) => {
 
   return (
     <div key={id} className="mb-2.5 rounded bg-white shadow-sm overflow-hidden">
-      <div className="p-3 flex justify-between items-center">
+      <div className="p-2 sm:p-4 gap-2 flex flex-col sm:flex-row justify-between">
         <div className="flex items-center">
           <Link
             to={`/match/${id}`}
@@ -34,8 +34,9 @@ export const MatchCard = ({ event, bets, onSelectOutcome }: MatchCardProps) => {
             }}
             className="flex items-center text-sm transition-colors"
           >
-            <span className="inline-block bg-[#702c82] text-white text-sm px-2 py-0.5 rounded mr-2"></span>
-            {home_team} - {away_team}
+            <span className="mr-2">{getIconBySport(event.sport_key)}</span>
+            <span className="font-bold">{home_team}</span> <span className="mx-1">-</span>
+            <span className="font-bold">{away_team}</span>
           </Link>
         </div>
 

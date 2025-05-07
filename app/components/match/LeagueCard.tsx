@@ -11,10 +11,10 @@ type LeagueCardProps = {
 
 const LeagueCard = ({ commenceTime, leagueTitle, matches, bets }: LeagueCardProps) => {
   return (
-    <div className="mb-6 rounded-lg overflow-hidden bg-gray-50 shadow-md">
-      <div className="p-4 bg-[#1c3c5c] text-white flex justify-between">
-        <h2 className="text-xl font-bold">{leagueTitle}</h2>
-        <p className="text-xl">
+    <div className="mb-6 rounded-lg overflow-hidden bg-gray-50 sm:shadow-md ">
+      <div className="p-4 bg-[#1c3c5c] text-white flex justify-between items-center">
+        <h2 className="text-lg sm:text-xl font-bold">{leagueTitle}</h2>
+        <p className="text-sm sm:text-lg">
           Today{' '}
           {new Date(commenceTime).toLocaleString('tr-TR', {
             hour: '2-digit',

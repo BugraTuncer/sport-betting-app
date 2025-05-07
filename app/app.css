@@ -5,6 +5,7 @@
     'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol', 'Noto Color Emoji';
   --color-primary: #19aa52;
+  --color-primary-dark: #157a3f;
 }
 
 html,

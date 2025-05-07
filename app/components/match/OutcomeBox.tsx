@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import type { Outcome } from '~/models/matches';
+import { motion } from 'framer-motion';
 
 export const OutcomeBox = ({
   label,
@@ -15,26 +16,32 @@ export const OutcomeBox = ({
   if (!outcome) return null;
 
   return (
-    <div
+    <motion.div
+      whileTap={{ scale: 0.95 }}
+      animate={{
+        backgroundColor: selected ? '#e7c84a' : '#f3f4f6',
+        transition: { duration: 0.2 },
+      }}
       className={classNames(
-        'w-[70px] h-16 rounded bg-gray-100 flex flex-col items-center justify-center cursor-pointer transition-colors',
+        'w-[70px] h-16 rounded flex flex-col items-center justify-center cursor-pointer',
         {
-          'border border-[#efd055] hover:bg-[#e7c84a]': selected,
-          'hover:bg-gray-200': !selected,
+          'border border-[#efd055]': selected,
         }
       )}
       onClick={onClick}
     >
-      <div
-        className={classNames('text-lg font-bold mb-1', {
-          'bg-[#d1b93e] w-full h-full text-center': selected,
-        })}
+      <motion.div
+        animate={{
+          backgroundColor: selected ? '#d1b93e' : 'transparent',
+        }}
+        transition={{ duration: 0.2 }}
+        className={classNames('text-lg font-bold mb-1 w-full h-full text-center')}
       >
         {outcome.price.toFixed(2)}
-      </div>
+      </motion.div>
       <div className="text-xs text-gray-600 bg-gray-300 px-1.5 py-0.5 rounded w-full text-center">
         {label}
       </div>
-    </div>
+    </motion.div>
   );
 };

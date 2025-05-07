@@ -1,9 +1,9 @@
 import { useDispatch } from 'react-redux';
-import type { Match, Outcome } from '~/models/matches';
-import { useMemo } from 'react';
-import type { Bet } from '~/models/bets';
-import { MatchCard } from './MatchCard';
 import { addToBasket, removeFromBasket } from '~/store/slices/betSlice';
+import type { Match, Outcome } from '~/models/matches';
+import { MatchCard } from './MatchCard';
+import type { Bet } from '~/models/bets';
+import { useMemo } from 'react';
 
 type MatchCardContainerProps = {
   event: Match;

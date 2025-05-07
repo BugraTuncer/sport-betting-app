@@ -3,10 +3,13 @@ import type { Route } from './+types/home';
 import type { Match } from '~/models/matches';
 import { useSelector } from 'react-redux';
 import type { RootState } from '~/store';
+import MatchList from '~/components/match/MatchList';
 import ProtectedRoute from '~/components/common/ProtectedRoute';
+import MainLayout from '~/components/layout/MainLayout';
+import SportsNav from '~/components/sport/SportsNav';
 import { filterMatchesBySport } from '~/utils/matchUtils';
 import { useMatches } from '~/hooks/useMatches';
-import MatchList from '~/components/match/MatchList';
+import LoadingSpinner from '~/components/common/LoadingSpinner';
 
 export function meta({}: Route.MetaArgs) {
   return [{ title: 'Sports Betting App' }, { name: 'description', content: 'Sports Betting App' }];
@@ -24,9 +27,12 @@ export default function Home() {
 
   return (
     <ProtectedRoute>
-      <div className="container mx-auto p-6">
-        <MatchList bets={bets} matches={filteredMatches} />
-      </div>
+      <MainLayout>
+        <SportsNav onSportSelect={setSelectedSport} selectedSport={selectedSport} />
+        <div className="container mx-auto p-2 sm:p-4">
+          {loading ? <LoadingSpinner /> : <MatchList bets={bets} matches={filteredMatches} />}
+        </div>
+      </MainLayout>
     </ProtectedRoute>
   );
 }
