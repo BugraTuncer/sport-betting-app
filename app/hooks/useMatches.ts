@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import type { Match } from '~/models/matches';
-import { getAllBookmakerTitles, getMatches } from '~/services/api';
+import { getMatches } from '~/services/api';
 import { setBookmakerTitles } from '~/store/slices/bookmakerSlice';
-import type { RootState } from '~/store';
+import { getAllBookmakerTitles } from '~/utils/matchUtils';
 
 export const useMatches = () => {
   const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
-  const bookmakerTitles = useSelector((state: RootState) => state.bookmaker.titles);
 
   useEffect(() => {
     const fetchMatches = async () => {

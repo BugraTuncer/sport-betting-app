@@ -4,24 +4,40 @@ import { format, isToday, isTomorrow, isYesterday, parseISO } from 'date-fns';
 import { tr } from 'date-fns/locale';
 import { addToBasket, removeFromBasket } from '~/store/slices/betSlice';
 
-export const isSelectedMatch = (bets: Bet[], eventId: string, outcomeName: string): boolean =>
-  bets.some((b) => b.eventId === eventId && b.outcome.name === outcomeName);
+export const isSelectedMatch = (
+  bets: Bet[],
+  eventId: string,
+  outcomeName: string,
+  isHandicap: boolean = false
+): boolean =>
+  bets.some(
+    (b) =>
+      b.eventId === eventId &&
+      b.outcome.name === outcomeName &&
+      ((isHandicap && b.outcome.point !== undefined) ||
+        (!isHandicap && b.outcome.point === undefined))
+  );
 
 export const findMatchOutcomes = (event: Match, bookmakerTitles: string[]) => {
   const matchBookmaker = bookmakerTitles
     .map((name) => event.bookmakers.find((b) => b.title === name))
-    .find((b) => b !== undefined);
+    .filter((b) => b !== undefined)
+    .sort((a, b) => b.markets.length - a.markets.length)[0];
 
   if (!matchBookmaker) return null;
-
-  const outcomes = matchBookmaker.markets?.[0]?.outcomes || [];
+  const h2hMarket = matchBookmaker.markets.find((m) => m.key === 'h2h');
+  const outcomes = h2hMarket?.outcomes || [];
   const homeOutcome = outcomes.find((o) => o.name === event.home_team);
   const awayOutcome = outcomes.find((o) => o.name === event.away_team);
   const drawOutcome = outcomes.find(
     (o) => o.name !== event.home_team && o.name !== event.away_team
   );
 
-  if (!homeOutcome || !awayOutcome) return null;
+  const totalsMarket = matchBookmaker.markets.find((m) => m.key === 'totals');
+  const totalsOutcomes = totalsMarket?.outcomes || [];
+
+  const spreadsMarket = matchBookmaker.markets.find((m) => m.key === 'spreads');
+  const spreadsOutcomes = spreadsMarket?.outcomes || [];
 
   return {
     matchBookmaker,
@@ -29,6 +45,10 @@ export const findMatchOutcomes = (event: Match, bookmakerTitles: string[]) => {
     homeOutcome,
     awayOutcome,
     drawOutcome,
+    totalsMarket,
+    totalsOutcomes,
+    spreadsMarket,
+    spreadsOutcomes,
   };
 };
 
@@ -53,9 +73,14 @@ export const filterMatchesBySport = (matches: Match[], selectedSport: string) =>
   });
 };
 
-export const getMatchResultLabel = (outcomeName: string, home: string, away: string) => {
-  if (outcomeName === home) return '1';
-  if (outcomeName === away) return '2';
+export const getMatchResultLabel = (outcome: Outcome, home: string, away: string) => {
+  if (outcome.name !== 'Over' && outcome.name !== 'Under' && outcome.point) {
+    return `H ${outcome.point} ${outcome.name} `;
+  }
+  if (outcome.name === 'Over') return `Over ${outcome.point}`;
+  if (outcome.name === 'Under') return `Under ${outcome.point}`;
+  if (outcome.name === home) return '1';
+  if (outcome.name === away) return '2';
   return 'X';
 };
 
@@ -101,15 +126,34 @@ export const handleOutcomeSelection = (
     }
   }
 
-  const isAlreadySelected = bets.find(
-    (b) => b.eventId === eventId && b.outcome.name === outcome.name
-  );
-
-  if (isAlreadySelected) {
+  const existingBet = bets.find((b) => b.eventId === eventId);
+  if (existingBet) {
     dispatch(removeFromBasket(eventId));
-  } else {
-    dispatch(addToBasket({ eventId, outcome, home_team, away_team }));
   }
 
+  if (
+    existingBet &&
+    existingBet.outcome.name === outcome.name &&
+    existingBet.outcome.point === outcome.point
+  ) {
+    return { hasStarted: false };
+  }
+
+  dispatch(addToBasket({ eventId, outcome, home_team, away_team }));
+
   return { hasStarted: false };
+};
+
+export const getAllBookmakerTitles = async (events: Match[]): Promise<string[]> => {
+  const titles = new Set<string>();
+
+  events.forEach((event) => {
+    event.bookmakers?.forEach((bookmaker) => {
+      if (bookmaker?.title) {
+        titles.add(bookmaker.title);
+      }
+    });
+  });
+
+  return Array.from(titles).sort();
 };

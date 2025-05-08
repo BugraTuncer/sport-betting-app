@@ -1,8 +1,9 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import type { Route } from './+types/home';
 import type { Match } from '~/models/matches';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '~/store';
+import { setSelectedSport } from '~/store/slices/sportSlice';
 import MatchListContainer from '~/containers/match/MatchListContainer';
 import ProtectedRoute from '~/components/common/ProtectedRoute';
 import MainLayout from '~/components/layout/MainLayout';
@@ -16,9 +17,14 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
-  const [selectedSport, setSelectedSport] = useState('soccer');
+  const dispatch = useDispatch();
+  const selectedSport = useSelector((state: RootState) => state.sport.selectedSport);
   const bets = useSelector((state: RootState) => state.bet.basket);
   const { matches, loading }: { matches: Match[]; loading: boolean } = useMatches();
+
+  const handleSportSelect = (sport: string) => {
+    dispatch(setSelectedSport(sport));
+  };
 
   const filteredMatches = useMemo(
     () => filterMatchesBySport(matches, selectedSport),
@@ -28,7 +34,7 @@ export default function Home() {
   return (
     <ProtectedRoute>
       <MainLayout>
-        <SportsNav onSportSelect={setSelectedSport} selectedSport={selectedSport} />
+        <SportsNav onSportSelect={handleSportSelect} selectedSport={selectedSport} />
         <div className="container mx-auto p-2 sm:p-4">
           {loading ? (
             <LoadingSpinner />

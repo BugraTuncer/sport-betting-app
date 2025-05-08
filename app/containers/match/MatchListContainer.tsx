@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback } from 'react';
 import { useDebouncedValue } from '~/hooks/useDebouncedValue';
-import type { MatchesByLeague, MatchListContainerProps } from '~/models/matches';
+import type { MatchesByLeagueAndTime, MatchListContainerProps } from '~/models/matches';
 import MatchList from '~/components/match/MatchList';
 import LeagueCard from '~/components/match/LeagueCard';
 
@@ -21,27 +21,39 @@ export default function MatchListContainer({ matches }: MatchListContainerProps)
     );
   }, [matches, debouncedSearchTerm]);
 
-  const matchesByLeague = useMemo(() => {
-    return filteredMatches.reduce<MatchesByLeague>((acc, match) => {
+  const matchesByLeagueAndTime = useMemo(() => {
+    const grouped: MatchesByLeagueAndTime = {};
+
+    filteredMatches.forEach((match) => {
       const league = match.sport_title;
-      if (!acc[league]) {
-        acc[league] = [];
+      const time = match.commence_time;
+
+      if (!grouped[league]) {
+        grouped[league] = {};
       }
-      acc[league].push(match);
-      return acc;
-    }, {});
+
+      if (!grouped[league][time]) {
+        grouped[league][time] = [];
+      }
+
+      grouped[league][time].push(match);
+    });
+
+    return grouped;
   }, [filteredMatches]);
 
   const leagueCards = useMemo(() => {
-    return Object.entries(matchesByLeague).map(([league, leagueMatches]) => (
-      <LeagueCard
-        key={league}
-        leagueTitle={league}
-        matches={leagueMatches}
-        commenceTime={leagueMatches[0].commence_time}
-      />
-    ));
-  }, [matchesByLeague]);
+    return Object.entries(matchesByLeagueAndTime).flatMap(([league, timeGroups]) =>
+      Object.entries(timeGroups).map(([time, leagueMatches]) => (
+        <LeagueCard
+          key={`${league}-${time}`}
+          leagueTitle={league}
+          matches={leagueMatches}
+          commenceTime={time}
+        />
+      ))
+    );
+  }, [matchesByLeagueAndTime]);
 
   return (
     <MatchList

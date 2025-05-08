@@ -5,6 +5,7 @@ import { combineReducers } from '@reduxjs/toolkit';
 import authReducer from './slices/authSlice';
 import betReducer from './slices/betSlice';
 import bookmakerReducer from './slices/bookmakerSlice';
+import sportReducer from './slices/sportSlice';
 
 const createNoopStorage = () => {
   return {
@@ -25,13 +26,14 @@ const storage = typeof window !== 'undefined' ? createWebStorage('local') : crea
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['bet', 'bookmaker'],
+  whitelist: ['bet', 'bookmaker', 'sport'],
 };
 
 const rootReducer = combineReducers({
   auth: authReducer,
   bet: betReducer,
   bookmaker: bookmakerReducer,
+  sport: sportReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

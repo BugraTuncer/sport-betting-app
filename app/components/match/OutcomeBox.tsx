@@ -19,15 +19,12 @@ export const OutcomeBox = ({
     <motion.div
       whileTap={{ scale: 0.95 }}
       animate={{
-        backgroundColor: selected ? '#e7c84a' : '#f3f4f6',
+        backgroundColor: '#f3f4f6',
         transition: { duration: 0.2 },
       }}
-      className={classNames(
-        'w-[70px] h-16 rounded flex flex-col items-center justify-center cursor-pointer',
-        {
-          'border border-[#efd055]': selected,
-        }
-      )}
+      className={
+        'w-[70px] h-15 rounded-md overflow-hidden flex flex-col items-center justify-center cursor-pointer'
+      }
       onClick={onClick}
     >
       <motion.div
@@ -35,11 +32,13 @@ export const OutcomeBox = ({
           backgroundColor: selected ? '#d1b93e' : 'transparent',
         }}
         transition={{ duration: 0.2 }}
-        className={classNames('text-lg font-bold mb-1 w-full h-full text-center')}
+        className={classNames(
+          'text-lg font-bold  w-full h-full text-center rounded-tl-md rounded-tr-md'
+        )}
       >
         {outcome.price.toFixed(2)}
       </motion.div>
-      <div className="text-xs text-gray-600 bg-gray-300 px-1.5 py-0.5 rounded w-full text-center">
+      <div className="text-xs text-gray-600 bg-gray-300 px-1 py-0.5  w-full text-center whitespace-nowrap rounded-bl-md rounded-br-md ">
         {label}
       </div>
     </motion.div>

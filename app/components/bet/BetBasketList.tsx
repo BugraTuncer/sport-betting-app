@@ -20,7 +20,7 @@ const BetBasketList: React.FC<BetBasketListProps> = ({ bet, onRemove }) => {
         <div className="flex items-center">
           <div className="bg-gray-200 rounded-l-md px-2 py-1">
             <span className="text-sm font-bold">
-              {getMatchResultLabel(bet.outcome.name, bet.home_team, bet.away_team)}
+              {getMatchResultLabel(bet.outcome, bet.home_team, bet.away_team)}
             </span>
           </div>
           <div className="bg-[#efd055] rounded-r-md px-2 py-1">

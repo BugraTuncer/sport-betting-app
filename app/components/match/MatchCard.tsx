@@ -9,7 +9,7 @@ export const MatchCard = ({ event, onSelectOutcome, bookmakerTitles, bets }: Mat
   const matchOutcomes = findMatchOutcomes(event, bookmakerTitles);
   if (!matchOutcomes) return null;
 
-  const { homeOutcome, awayOutcome, drawOutcome } = matchOutcomes;
+  const { homeOutcome, awayOutcome, drawOutcome, totalsOutcomes } = matchOutcomes;
 
   return (
     <div key={id} className="mb-2.5 rounded bg-white shadow-sm overflow-hidden">
@@ -28,11 +28,11 @@ export const MatchCard = ({ event, onSelectOutcome, bookmakerTitles, bets }: Mat
           </Link>
         </div>
 
-        <div className="flex gap-1">
+        <div className="flex gap-2">
           <OutcomeBox
             label="MR 1"
             outcome={homeOutcome}
-            selected={!!homeOutcome && isSelectedMatch(bets, id, homeOutcome.name)}
+            selected={!!homeOutcome && isSelectedMatch(bets, id, homeOutcome.name, false)}
             onClick={() =>
               homeOutcome && onSelectOutcome(id, homeOutcome, home_team, away_team, commence_time)
             }
@@ -40,7 +40,7 @@ export const MatchCard = ({ event, onSelectOutcome, bookmakerTitles, bets }: Mat
           <OutcomeBox
             label="MR X"
             outcome={drawOutcome}
-            selected={!!drawOutcome && isSelectedMatch(bets, id, drawOutcome.name)}
+            selected={!!drawOutcome && isSelectedMatch(bets, id, drawOutcome.name, false)}
             onClick={() =>
               drawOutcome && onSelectOutcome(id, drawOutcome, home_team, away_team, commence_time)
             }
@@ -48,11 +48,20 @@ export const MatchCard = ({ event, onSelectOutcome, bookmakerTitles, bets }: Mat
           <OutcomeBox
             label="MR 2"
             outcome={awayOutcome}
-            selected={!!awayOutcome && isSelectedMatch(bets, id, awayOutcome.name)}
+            selected={!!awayOutcome && isSelectedMatch(bets, id, awayOutcome.name, false)}
             onClick={() =>
               awayOutcome && onSelectOutcome(id, awayOutcome, home_team, away_team, commence_time)
             }
           />
+          {totalsOutcomes.map((outcome) => (
+            <OutcomeBox
+              key={outcome.name + outcome.point}
+              label={`${outcome.point} ${outcome.name}`}
+              outcome={outcome}
+              selected={isSelectedMatch(bets, id, outcome.name, true)}
+              onClick={() => onSelectOutcome(id, outcome, home_team, away_team, commence_time)}
+            />
+          ))}
         </div>
       </div>
     </div>

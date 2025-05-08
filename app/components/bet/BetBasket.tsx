@@ -21,7 +21,7 @@ const BetBasket: React.FC<BetBasketProps> = ({
 }) => {
   return (
     <>
-      <div className="fixed bottom-4 right-1 sm:right-4 z-50">
+      <div className="fixed bottom-4 right-0 sm:right-4 z-50">
         <Button
           onClick={() => setIsOpen(!isOpen)}
           className={`${bets.length > 2 ? 'bg-primary' : 'bg-red-600'} text-white rounded-lg px-4 py-2 flex items-center gap-2 shadow-lg cursor-pointer`}
@@ -75,7 +75,7 @@ const BetBasket: React.FC<BetBasketProps> = ({
 
                 {bets.length > 0 && (
                   <>
-                    <div className="mt-4 space-y-2 border-t pt-4">
+                    <div className="mt-2 sm:mt-4 space-y-2 border-t pt-4">
                       <div className="flex justify-between">
                         <span>Total Match</span>
                         <span>{bets.length}</span>
@@ -86,7 +86,7 @@ const BetBasket: React.FC<BetBasketProps> = ({
                       </div>
                     </div>
 
-                    <div className="flex justify-around items-center mt-5">
+                    <div className="flex justify-around items-center mt-1 sm:mt-5">
                       <div onClick={() => setShowConfirmModal(true)} className="cursor-pointer">
                         <DeleteIcon width={30} height={30} color="black" />
                       </div>

@@ -10,6 +10,7 @@ export interface BetSlice {
   outcome: {
     name: string;
     price: number;
+    point?: number;
   };
   home_team: string;
   away_team: string;

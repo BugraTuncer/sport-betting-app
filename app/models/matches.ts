@@ -3,6 +3,7 @@ import type { Bet } from './bets';
 export interface Outcome {
   name: string;
   price: number;
+  point?: number;
 }
 
 export interface Market {
@@ -68,6 +69,10 @@ export interface MatchDetailProps {
     homeOutcome: Outcome;
     awayOutcome: Outcome;
     drawOutcome: Outcome | undefined;
+    totalsMarket?: Market;
+    totalsOutcomes?: Outcome[];
+    spreadsMarket?: Market;
+    spreadsOutcomes?: Outcome[];
   };
   bets: Bet[];
   showWarningModal: boolean;
@@ -80,3 +85,9 @@ export interface MatchDetailProps {
     commence_time: string
   ) => void;
 }
+
+export type MatchesByLeagueAndTime = {
+  [league: string]: {
+    [time: string]: Match[];
+  };
+};

@@ -17,7 +17,7 @@ const MatchDetail = ({
   bets,
 }: MatchDetailProps) => {
   const navigate = useNavigate();
-  const { homeOutcome, drawOutcome, awayOutcome } = matchOutcomes;
+  const { homeOutcome, drawOutcome, awayOutcome, totalsOutcomes, spreadsOutcomes } = matchOutcomes;
   const { home_team, away_team, commence_time, sport_title, id } = matchInfos;
 
   const formattedTime = new Date(commence_time).toLocaleTimeString('tr-TR', {
@@ -68,7 +68,7 @@ const MatchDetail = ({
                 <OutcomeBox
                   label="MR 1"
                   outcome={homeOutcome}
-                  selected={isSelectedMatch(bets, id, homeOutcome?.name)}
+                  selected={isSelectedMatch(bets, id, homeOutcome?.name, false)}
                   onClick={() =>
                     homeOutcome &&
                     onSelectOutcome(id, homeOutcome, home_team, away_team, commence_time)
@@ -78,7 +78,7 @@ const MatchDetail = ({
                   <OutcomeBox
                     label="MR X"
                     outcome={drawOutcome}
-                    selected={isSelectedMatch(bets, id, drawOutcome?.name)}
+                    selected={isSelectedMatch(bets, id, drawOutcome?.name, false)}
                     onClick={() =>
                       drawOutcome &&
                       onSelectOutcome(id, drawOutcome, home_team, away_team, commence_time)
@@ -88,7 +88,7 @@ const MatchDetail = ({
                 <OutcomeBox
                   label="MR 2"
                   outcome={awayOutcome}
-                  selected={isSelectedMatch(bets, id, awayOutcome?.name)}
+                  selected={isSelectedMatch(bets, id, awayOutcome?.name, false)}
                   onClick={() =>
                     awayOutcome &&
                     onSelectOutcome(id, awayOutcome, home_team, away_team, commence_time)
@@ -96,6 +96,50 @@ const MatchDetail = ({
                 />
               </div>
             </div>
+
+            {totalsOutcomes && totalsOutcomes.length > 0 && (
+              <div>
+                <p className="text-lg font-semibold p-3">Over/Under</p>
+                <div className="flex gap-2 p-3">
+                  {totalsOutcomes.map((outcome) => (
+                    <OutcomeBox
+                      key={outcome.name + outcome.point}
+                      label={`${outcome.point} ${outcome.name}`}
+                      outcome={outcome}
+                      selected={isSelectedMatch(bets, id, outcome.name, true)}
+                      onClick={() =>
+                        onSelectOutcome(id, outcome, home_team, away_team, commence_time)
+                      }
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+            {spreadsOutcomes && spreadsOutcomes.length > 0 && (
+              <div>
+                <p className="text-lg font-semibold p-3">Handicap</p>
+                <div className="flex gap-2 p-3">
+                  <div className="flex items-center justify-center border border-gray-300 rounded-lg p-2 text-xl font-bold">
+                    <p>
+                      {spreadsOutcomes[0]?.point && spreadsOutcomes[0].point < 0
+                        ? `0:${spreadsOutcomes[0].point}`
+                        : `${spreadsOutcomes[0].point}:0`}
+                    </p>
+                  </div>
+                  {spreadsOutcomes.map((outcome) => (
+                    <OutcomeBox
+                      key={outcome.name + outcome.point}
+                      label={`H MS ${outcome.name === homeOutcome.name ? '1' : outcome.name === awayOutcome.name ? '2' : 'X'} `}
+                      outcome={outcome}
+                      selected={isSelectedMatch(bets, id, outcome.name, true)}
+                      onClick={() =>
+                        onSelectOutcome(id, outcome, home_team, away_team, commence_time)
+                      }
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </motion.div>
       </MainLayout>
