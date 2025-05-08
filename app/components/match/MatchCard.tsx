@@ -1,24 +1,12 @@
 import { Link } from 'react-router-dom';
-import type { Match, Outcome } from '~/models/matches';
+import type { MatchCardProps } from '~/models/matches';
 import { OutcomeBox } from './OutcomeBox';
-import type { Bet } from '~/models/bets';
-import { isSelected, findMatchOutcomes, getIconBySport } from '~/utils/matchUtils';
+import { isSelectedMatch, findMatchOutcomes, getIconBySport } from '~/utils/matchUtils';
 
-type MatchCardProps = {
-  event: Match;
-  bets: Bet[];
-  onSelectOutcome: (
-    eventId: string,
-    outcome: Outcome,
-    home_team: string,
-    away_team: string
-  ) => void;
-};
+export const MatchCard = ({ event, onSelectOutcome, bookmakerTitles, bets }: MatchCardProps) => {
+  const { id, home_team, away_team, commence_time } = event;
 
-export const MatchCard = ({ event, bets, onSelectOutcome }: MatchCardProps) => {
-  const { id, home_team, away_team } = event;
-
-  const matchOutcomes = findMatchOutcomes(event);
+  const matchOutcomes = findMatchOutcomes(event, bookmakerTitles);
   if (!matchOutcomes) return null;
 
   const { homeOutcome, awayOutcome, drawOutcome } = matchOutcomes;
@@ -44,20 +32,26 @@ export const MatchCard = ({ event, bets, onSelectOutcome }: MatchCardProps) => {
           <OutcomeBox
             label="MR 1"
             outcome={homeOutcome}
-            selected={!!homeOutcome && isSelected(bets, id, homeOutcome.name)}
-            onClick={() => homeOutcome && onSelectOutcome(id, homeOutcome, home_team, away_team)}
+            selected={!!homeOutcome && isSelectedMatch(bets, id, homeOutcome.name)}
+            onClick={() =>
+              homeOutcome && onSelectOutcome(id, homeOutcome, home_team, away_team, commence_time)
+            }
           />
           <OutcomeBox
             label="MR X"
             outcome={drawOutcome}
-            selected={!!drawOutcome && isSelected(bets, id, drawOutcome.name)}
-            onClick={() => drawOutcome && onSelectOutcome(id, drawOutcome, home_team, away_team)}
+            selected={!!drawOutcome && isSelectedMatch(bets, id, drawOutcome.name)}
+            onClick={() =>
+              drawOutcome && onSelectOutcome(id, drawOutcome, home_team, away_team, commence_time)
+            }
           />
           <OutcomeBox
             label="MR 2"
             outcome={awayOutcome}
-            selected={!!awayOutcome && isSelected(bets, id, awayOutcome.name)}
-            onClick={() => awayOutcome && onSelectOutcome(id, awayOutcome, home_team, away_team)}
+            selected={!!awayOutcome && isSelectedMatch(bets, id, awayOutcome.name)}
+            onClick={() =>
+              awayOutcome && onSelectOutcome(id, awayOutcome, home_team, away_team, commence_time)
+            }
           />
         </div>
       </div>

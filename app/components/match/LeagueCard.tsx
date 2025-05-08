@@ -1,26 +1,20 @@
 import MatchCardContainer from '~/containers/match/MatchCardContainer';
 import type { LeagueCardProps } from '~/models/league';
+import type { Match } from '~/models/matches';
+import { formatMatchDate } from '~/utils/matchUtils';
 
-const LeagueCard = ({ commenceTime, leagueTitle, matches, bets }: LeagueCardProps) => {
+export default function LeagueCard({ leagueTitle, matches, commenceTime }: LeagueCardProps) {
   return (
     <div className="mb-6 rounded-lg overflow-hidden bg-gray-50 sm:shadow-md ">
       <div className="p-4 bg-[#1c3c5c] text-white flex justify-between items-center">
         <h2 className="text-lg sm:text-xl font-bold">{leagueTitle}</h2>
-        <p className="text-sm sm:text-lg">
-          Today{' '}
-          {new Date(commenceTime).toLocaleString('tr-TR', {
-            hour: '2-digit',
-            minute: '2-digit',
-          })}
-        </p>
+        <p className="text-sm sm:text-lg">{formatMatchDate(commenceTime)}</p>
       </div>
       <div className="p-4">
         {matches.map((match) => (
-          <MatchCardContainer key={match.id} event={match} bets={bets} />
+          <MatchCardContainer key={match.id} event={match} />
         ))}
       </div>
     </div>
   );
-};
-
-export default LeagueCard;
+}

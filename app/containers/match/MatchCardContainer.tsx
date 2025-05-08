@@ -1,26 +1,54 @@
-import { useDispatch } from 'react-redux';
-import { addToBasket, removeFromBasket } from '~/store/slices/betSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import type { Match, MatchCardContainerProps, Outcome } from '~/models/matches';
 import { MatchCard } from '~/components/match/MatchCard';
-import type { Bet } from '~/models/bets';
+import type { RootState } from '~/store';
+import { useState } from 'react';
+import ConfirmationModal from '~/components/common/ConfirmationModal';
+import { handleOutcomeSelection } from '~/utils/matchUtils';
 
-export default function MatchCardContainer({ event, bets }: MatchCardContainerProps) {
+export default function MatchCardContainer({ event }: MatchCardContainerProps) {
   const dispatch = useDispatch();
+  const bookmakerTitles = useSelector((state: RootState) => state.bookmaker.titles);
+  const bets = useSelector((state: RootState) => state.bet.basket);
+  const [showWarningModal, setShowWarningModal] = useState(false);
 
   const handleSelectOutcome = (
     eventId: string,
     outcome: Outcome,
     home_team: string,
-    away_team: string
+    away_team: string,
+    commence_time: string
   ) => {
-    const existingBet = bets.find((bet) => bet.eventId === eventId);
-
-    if (existingBet?.outcome.name === outcome.name) {
-      dispatch(removeFromBasket(eventId));
-    } else {
-      dispatch(addToBasket({ eventId, outcome, home_team, away_team }));
+    const result = handleOutcomeSelection(
+      eventId,
+      outcome,
+      home_team,
+      away_team,
+      bets,
+      dispatch,
+      commence_time
+    );
+    if (result.hasStarted) {
+      setShowWarningModal(true);
     }
   };
 
-  return <MatchCard event={event} bets={bets} onSelectOutcome={handleSelectOutcome} />;
+  return (
+    <>
+      <MatchCard
+        event={event}
+        onSelectOutcome={handleSelectOutcome}
+        bookmakerTitles={bookmakerTitles}
+        bets={bets}
+      />
+      <ConfirmationModal
+        isOpen={showWarningModal}
+        onClose={() => setShowWarningModal(false)}
+        onConfirm={() => setShowWarningModal(false)}
+        title="Warning"
+        message="This match has already started. You cannot add it to your basket."
+        showButtons={false}
+      />
+    </>
+  );
 }

@@ -4,7 +4,6 @@ import type { Match } from './matches';
 export interface LeagueCardProps {
   leagueTitle: string;
   matches: Match[];
-  bets: Bet[];
   commenceTime: string;
 }
 

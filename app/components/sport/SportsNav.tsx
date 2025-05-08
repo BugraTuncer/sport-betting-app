@@ -6,6 +6,7 @@ const sports = [
   { id: 'cricket', title: 'Cricket', icon: '🏏' },
   { id: 'basketball', title: 'Basketball', icon: '🏀' },
   { id: 'volleyball', title: 'Volleyball', icon: '🏐' },
+  { id: 'baseball', title: 'Baseball', icon: '⚾' },
   { id: 'tennis', title: 'Tennis', icon: '🎾' },
   { id: 'icehockey', title: 'Ice Hockey', icon: '🏒' },
   { id: 'handball', title: 'Handball', icon: '🤾' },

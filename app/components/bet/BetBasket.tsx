@@ -1,24 +1,11 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { BetSlice } from '~/models/bets';
+import type { BetBasketProps, BetSlice } from '~/models/bets';
 import Button from '../common/Button';
 import DeleteIcon from 'public/icons/DeleteIcon';
 import BetBasketList from './BetBasketList';
 import EmptyBetBasket from './EmptyBasketList';
 import ConfirmationModal from '../common/ConfirmationModal';
-
-interface BetBasketProps {
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-  showConfirmModal: boolean;
-  setShowConfirmModal: (show: boolean) => void;
-  bets: BetSlice[];
-  totalOdds: number;
-  onClearBasket: () => void;
-  onRemoveBet: (eventId: string) => void;
-  onUndo: () => void;
-  undoMatch: { bet: BetSlice; timer: NodeJS.Timeout } | null;
-}
 
 const BetBasket: React.FC<BetBasketProps> = ({
   isOpen,
@@ -37,9 +24,9 @@ const BetBasket: React.FC<BetBasketProps> = ({
       <div className="fixed bottom-4 right-1 sm:right-4 z-50">
         <Button
           onClick={() => setIsOpen(!isOpen)}
-          className="bg-red-600 text-white rounded-lg px-4 py-2 flex items-center gap-2 shadow-lg cursor-pointer"
+          className={`${bets.length > 2 ? 'bg-primary' : 'bg-red-600'} text-white rounded-lg px-4 py-2 flex items-center gap-2 shadow-lg cursor-pointer`}
         >
-          <span>{bets.length} Maç</span>
+          <span>{bets.length} Match</span>
           <span>{totalOdds.toFixed(2)}</span>
         </Button>
 
@@ -105,7 +92,7 @@ const BetBasket: React.FC<BetBasketProps> = ({
                       </div>
                       <Button
                         style={{ marginTop: '10px', width: '200px' }}
-                        onClick={() => console.log('clicked')}
+                        onClick={() => console.log('PLAY NOW')}
                       >
                         PLAY NOW
                       </Button>

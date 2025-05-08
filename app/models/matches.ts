@@ -28,9 +28,14 @@ export interface Match {
   bookmakers: Bookmaker[];
 }
 
+export interface MatchListProps {
+  leagueCards: React.ReactNode[];
+  searchTerm: string;
+  onSearchChange: (value: string) => void;
+}
+
 export interface MatchCardContainerProps {
   event: Match;
-  bets: Bet[];
 }
 
 export interface MatchesByLeague {
@@ -40,4 +45,38 @@ export interface MatchesByLeague {
 export interface MatchListContainerProps {
   matches: Match[];
   bets: Bet[];
+}
+
+export interface MatchCardProps {
+  event: Match;
+  onSelectOutcome: (
+    eventId: string,
+    outcome: Outcome,
+    home_team: string,
+    away_team: string,
+    commence_time: string
+  ) => void;
+  bookmakerTitles: string[];
+  bets: Bet[];
+}
+
+export interface MatchDetailProps {
+  matchInfos: Match;
+  matchOutcomes: {
+    matchBookmaker: Bookmaker;
+    outcomes: Outcome[];
+    homeOutcome: Outcome;
+    awayOutcome: Outcome;
+    drawOutcome: Outcome | undefined;
+  };
+  bets: Bet[];
+  showWarningModal: boolean;
+  setShowWarningModal: (show: boolean) => void;
+  onSelectOutcome: (
+    eventId: string,
+    outcome: Outcome,
+    home_team: string,
+    away_team: string,
+    commence_time: string
+  ) => void;
 }

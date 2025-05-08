@@ -2,9 +2,9 @@ import { useState, useMemo, useCallback } from 'react';
 import { useDebouncedValue } from '~/hooks/useDebouncedValue';
 import type { MatchesByLeague, MatchListContainerProps } from '~/models/matches';
 import MatchList from '~/components/match/MatchList';
-import LeagueCardContainer from './LeagueCardContainer';
+import LeagueCard from '~/components/match/LeagueCard';
 
-export default function MatchListContainer({ matches, bets }: MatchListContainerProps) {
+export default function MatchListContainer({ matches }: MatchListContainerProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearchTerm = useDebouncedValue(searchTerm, 300);
 
@@ -34,15 +34,14 @@ export default function MatchListContainer({ matches, bets }: MatchListContainer
 
   const leagueCards = useMemo(() => {
     return Object.entries(matchesByLeague).map(([league, leagueMatches]) => (
-      <LeagueCardContainer
+      <LeagueCard
         key={league}
         leagueTitle={league}
         matches={leagueMatches}
-        bets={bets}
         commenceTime={leagueMatches[0].commence_time}
       />
     ));
-  }, [matchesByLeague, bets]);
+  }, [matchesByLeague]);
 
   return (
     <MatchList

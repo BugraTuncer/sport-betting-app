@@ -1,11 +1,6 @@
 import { motion } from 'framer-motion';
 import SearchBar from '../common/SearchBar';
-
-interface MatchListProps {
-  leagueCards: React.ReactNode[];
-  searchTerm: string;
-  onSearchChange: (value: string) => void;
-}
+import type { MatchListProps } from '~/models/matches';
 
 const MatchList = ({ leagueCards, searchTerm, onSearchChange }: MatchListProps) => {
   return (

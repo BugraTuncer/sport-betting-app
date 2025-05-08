@@ -1,13 +1,8 @@
 import React from 'react';
 import { getMatchResultLabel } from '~/utils/matchUtils';
 import Button from '../common/Button';
-import type { BetSlice } from '~/models/bets';
+import type { BetBasketListProps, BetSlice } from '~/models/bets';
 import DeleteIcon from 'public/icons/DeleteIcon';
-
-interface BetBasketListProps {
-  bet: BetSlice;
-  onRemove: (eventId: string) => void;
-}
 
 const BetBasketList: React.FC<BetBasketListProps> = ({ bet, onRemove }) => {
   return (

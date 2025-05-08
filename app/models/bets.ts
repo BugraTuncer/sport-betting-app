@@ -14,3 +14,21 @@ export interface BetSlice {
   home_team: string;
   away_team: string;
 }
+
+export interface BetBasketProps {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+  showConfirmModal: boolean;
+  setShowConfirmModal: (show: boolean) => void;
+  bets: BetSlice[];
+  totalOdds: number;
+  onClearBasket: () => void;
+  onRemoveBet: (eventId: string) => void;
+  onUndo: () => void;
+  undoMatch: { bet: BetSlice; timer: NodeJS.Timeout } | null;
+}
+
+export interface BetBasketListProps {
+  bet: BetSlice;
+  onRemove: (eventId: string) => void;
+}
