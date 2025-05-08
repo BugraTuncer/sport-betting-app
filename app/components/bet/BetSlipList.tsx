@@ -1,10 +1,10 @@
 import React from 'react';
 import { getMatchResultLabel } from '~/utils/matchUtils';
 import Button from '../common/Button';
-import type { BetBasketListProps, BetSlice } from '~/models/bets';
+import type { BetSlipListProps } from '~/models/bets';
 import DeleteIcon from 'public/icons/DeleteIcon';
 
-const BetBasketList: React.FC<BetBasketListProps> = ({ bet, onRemove }) => {
+const BetSlipList: React.FC<BetSlipListProps> = ({ bet, onRemove }) => {
   return (
     <div key={bet.eventId} className="bg-gray-50 p-3 rounded-lg relative">
       <Button
@@ -32,4 +32,4 @@ const BetBasketList: React.FC<BetBasketListProps> = ({ bet, onRemove }) => {
   );
 };
 
-export default BetBasketList;
+export default BetSlipList;

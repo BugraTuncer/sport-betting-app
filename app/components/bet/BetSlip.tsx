@@ -1,13 +1,13 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { BetBasketProps, BetSlice } from '~/models/bets';
+import type { BetSlipProps } from '~/models/bets';
 import Button from '../common/Button';
 import DeleteIcon from 'public/icons/DeleteIcon';
-import BetBasketList from './BetBasketList';
-import EmptyBetBasket from './EmptyBasketList';
+import BetSlipList from './BetSlipList';
+import EmptyBetSlip from './EmptyBetSlipList';
 import ConfirmationModal from '../common/ConfirmationModal';
 
-const BetBasket: React.FC<BetBasketProps> = ({
+const BetSlip: React.FC<BetSlipProps> = ({
   isOpen,
   setIsOpen,
   showConfirmModal,
@@ -65,10 +65,10 @@ const BetBasket: React.FC<BetBasketProps> = ({
 
                 <div className="space-y-2 max-h-96 overflow-y-auto">
                   {bets.length === 0 ? (
-                    <EmptyBetBasket setIsOpen={setIsOpen} />
+                    <EmptyBetSlip setIsOpen={setIsOpen} />
                   ) : (
                     bets.map((bet) => (
-                      <BetBasketList key={bet.eventId} bet={bet} onRemove={onRemoveBet} />
+                      <BetSlipList key={bet.eventId} bet={bet} onRemove={onRemoveBet} />
                     ))
                   )}
                 </div>
@@ -116,4 +116,4 @@ const BetBasket: React.FC<BetBasketProps> = ({
   );
 };
 
-export default BetBasket;
+export default BetSlip;

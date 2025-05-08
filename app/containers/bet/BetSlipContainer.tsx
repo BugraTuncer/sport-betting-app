@@ -2,10 +2,10 @@ import { useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '~/store';
 import { addToBasket, clearBasket, removeFromBasket } from '~/store/slices/betSlice';
-import BetBasket from '~/components/bet/BetBasket';
 import type { BetSlice } from '~/models/bets';
+import BetSlip from '~/components/bet/BetSlip';
 
-export default function BetBasketContainer() {
+const BetSlipContainer = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const bets = useSelector((state: RootState) => state.bet.basket);
@@ -40,7 +40,7 @@ export default function BetBasketContainer() {
   };
 
   return (
-    <BetBasket
+    <BetSlip
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       showConfirmModal={showConfirmModal}
@@ -53,4 +53,5 @@ export default function BetBasketContainer() {
       undoMatch={undoMatch}
     />
   );
-}
+};
+export default BetSlipContainer;

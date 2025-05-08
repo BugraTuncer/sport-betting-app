@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearError, signIn } from '~/store/slices/authSlice';
+import { clearError, signIn, signInWithGoogle } from '~/store/slices/authSlice';
 import type { RootState, AppDispatch } from '~/store';
 import LoginForm from '~/components/auth/LoginForm';
 
@@ -22,9 +22,24 @@ export default function LoginContainer() {
     [dispatch, navigate]
   );
 
+  const handleGoogleLogin = useCallback(async () => {
+    try {
+      await dispatch(signInWithGoogle()).unwrap();
+    } catch (error) {
+      console.error('Google login failed:', error);
+    }
+  }, [dispatch]);
+
   useEffect(() => {
     dispatch(clearError());
   }, [dispatch]);
 
-  return <LoginForm onSubmit={handleSubmit} error={error} loading={loading} />;
+  return (
+    <LoginForm
+      onSubmit={handleSubmit}
+      error={error}
+      loading={loading}
+      onGoogleLogin={handleGoogleLogin}
+    />
+  );
 }

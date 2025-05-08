@@ -12,7 +12,7 @@ const SearchBar = ({
     <div className="relative w-full">
       <input
         type="text"
-        placeholder="Match or league search..."
+        placeholder="Match search..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="w-full px-5 py-3 border-2 border-gray-200 rounded-lg text-base transition-all duration-300 focus:outline-none focus:border-gray-600 focus:ring-3 focus:ring-gray-600/20 bg-white placeholder-gray-400"

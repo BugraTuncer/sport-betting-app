@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import type { Match, MatchCardContainerProps, Outcome } from '~/models/matches';
+import type { MatchCardContainerProps, Outcome } from '~/models/matches';
 import { MatchCard } from '~/components/match/MatchCard';
 import type { RootState } from '~/store';
 import { useState } from 'react';
@@ -11,7 +11,7 @@ export default function MatchCardContainer({ event }: MatchCardContainerProps) {
   const bookmakerTitles = useSelector((state: RootState) => state.bookmaker.titles);
   const bets = useSelector((state: RootState) => state.bet.basket);
   const [showWarningModal, setShowWarningModal] = useState(false);
-
+  const selectedSport = useSelector((state: RootState) => state.sport.selectedSport);
   const handleSelectOutcome = (
     eventId: string,
     outcome: Outcome,
@@ -40,6 +40,7 @@ export default function MatchCardContainer({ event }: MatchCardContainerProps) {
         onSelectOutcome={handleSelectOutcome}
         bookmakerTitles={bookmakerTitles}
         bets={bets}
+        selectedSport={selectedSport}
       />
       <ConfirmationModal
         isOpen={showWarningModal}

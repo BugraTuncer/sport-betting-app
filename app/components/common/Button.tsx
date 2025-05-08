@@ -6,11 +6,13 @@ interface ButtonProps {
   disabled?: boolean;
   className?: string;
   style?: React.CSSProperties;
+  type?: 'button' | 'submit' | 'reset';
 }
 
-const Button = ({ children, onClick, disabled, className, style }: ButtonProps) => {
+const Button = ({ children, onClick, disabled, className, style, type }: ButtonProps) => {
   return (
     <button
+      type={type}
       onClick={onClick}
       disabled={disabled}
       style={style}

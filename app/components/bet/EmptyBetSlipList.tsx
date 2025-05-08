@@ -1,6 +1,6 @@
 import Button from '../common/Button';
 
-const EmptyBetBasket = ({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) => {
+const EmptyBetSlipList = ({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) => {
   return (
     <div className="flex flex-col items-center justify-center py-8">
       <p className="text-lg font-medium text-gray-600 mb-4">There are no matches in your basket.</p>
@@ -14,4 +14,4 @@ const EmptyBetBasket = ({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void })
   );
 };
 
-export default EmptyBetBasket;
+export default EmptyBetSlipList;

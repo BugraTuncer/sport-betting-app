@@ -16,7 +16,7 @@ export interface BetSlice {
   away_team: string;
 }
 
-export interface BetBasketProps {
+export interface BetSlipProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   showConfirmModal: boolean;
@@ -29,7 +29,7 @@ export interface BetBasketProps {
   undoMatch: { bet: BetSlice; timer: NodeJS.Timeout } | null;
 }
 
-export interface BetBasketListProps {
+export interface BetSlipListProps {
   bet: BetSlice;
   onRemove: (eventId: string) => void;
 }

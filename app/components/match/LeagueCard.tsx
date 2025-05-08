@@ -1,6 +1,5 @@
 import MatchCardContainer from '~/containers/match/MatchCardContainer';
 import type { LeagueCardProps } from '~/models/league';
-import type { Match } from '~/models/matches';
 import { formatMatchDate } from '~/utils/matchUtils';
 
 export default function LeagueCard({ leagueTitle, matches, commenceTime }: LeagueCardProps) {

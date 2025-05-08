@@ -52,27 +52,6 @@ export const findMatchOutcomes = (event: Match, bookmakerTitles: string[]) => {
   };
 };
 
-export const filterMatchesBySport = (matches: Match[], selectedSport: string) => {
-  return matches.filter((match) => {
-    const sportKey = match.sport_key.toLowerCase();
-
-    switch (selectedSport) {
-      case 'cricket':
-      case 'soccer':
-      case 'basketball':
-      case 'volleyball':
-      case 'tennis':
-      case 'baseball':
-      case 'icehockey':
-      case 'handball':
-      case 'snooker':
-        return sportKey.includes(selectedSport);
-      default:
-        return true;
-    }
-  });
-};
-
 export const getMatchResultLabel = (outcome: Outcome, home: string, away: string) => {
   if (outcome.name !== 'Over' && outcome.name !== 'Under' && outcome.point) {
     return `H ${outcome.point} ${outcome.name} `;
@@ -82,19 +61,6 @@ export const getMatchResultLabel = (outcome: Outcome, home: string, away: string
   if (outcome.name === home) return '1';
   if (outcome.name === away) return '2';
   return 'X';
-};
-
-export const getIconBySport = (sport: string) => {
-  if (sport.includes('cricket')) return '🏏';
-  if (sport.includes('soccer')) return '⚽';
-  if (sport.includes('basketball')) return '🏀';
-  if (sport.includes('volleyball')) return '🏐';
-  if (sport.includes('tennis')) return '🎾';
-  if (sport.includes('baseball')) return '⚾';
-  if (sport.includes('icehockey')) return '🏒';
-  if (sport.includes('handball')) return '🤾';
-  if (sport.includes('snooker')) return '🎱';
-  return '🎲';
 };
 
 export const formatMatchDate = (commenceTime: string) => {
@@ -156,4 +122,39 @@ export const getAllBookmakerTitles = async (events: Match[]): Promise<string[]> 
   });
 
   return Array.from(titles).sort();
+};
+
+export const getSportIcon = (sport: string) => {
+  switch (sport) {
+    case 'Soccer':
+      return '⚽';
+    case 'Lacrosse':
+      return '🥍';
+    case 'American Football':
+      return '🏈';
+    case 'Cricket':
+      return '🏏';
+    case 'Basketball':
+      return '🏀';
+    case 'Baseball':
+      return '⚾';
+    case 'Ice Hockey':
+      return '🏒';
+    case 'Handball':
+      return '🤾';
+    case 'Snooker':
+      return '🎱';
+    case 'Boxing':
+      return '🥊';
+    case 'Golf':
+      return '🏌️‍♂️';
+    case 'Tennis':
+      return '🎾';
+    case 'Rugby League':
+      return '🏉';
+    case 'Mixed Martial Arts':
+      return '🥊';
+    default:
+      return '🎲';
+  }
 };

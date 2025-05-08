@@ -4,8 +4,9 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  signInWithPopup,
 } from 'firebase/auth';
-import { auth } from '../../config/firebase';
+import { auth, googleProvider } from '../../config/firebase';
 import { clearBasket } from './betSlice';
 
 interface AuthState {
@@ -63,6 +64,18 @@ export const initAuth = createAsyncThunk('auth/init', (_, { dispatch }) => {
   });
 });
 
+export const signInWithGoogle = createAsyncThunk(
+  'auth/signInWithGoogle',
+  async (_, { rejectWithValue }) => {
+    try {
+      const userCredential = await signInWithPopup(auth, googleProvider);
+      return userCredential.user;
+    } catch (error) {
+      return rejectWithValue(error instanceof Error ? error.message : 'An error occurred');
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -118,6 +131,18 @@ const authSlice = createSlice({
       })
       .addCase(initAuth.fulfilled, (state) => {
         state.loading = false;
+      })
+      .addCase(signInWithGoogle.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(signInWithGoogle.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.loading = false;
+      })
+      .addCase(signInWithGoogle.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });

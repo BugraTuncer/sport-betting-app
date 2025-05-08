@@ -59,6 +59,7 @@ export interface MatchCardProps {
   ) => void;
   bookmakerTitles: string[];
   bets: Bet[];
+  selectedSport: string;
 }
 
 export interface MatchDetailProps {
