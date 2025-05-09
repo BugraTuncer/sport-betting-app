@@ -5,6 +5,7 @@ export interface LeagueCardProps {
   leagueTitle: string;
   matches: Match[];
   commenceTime: string;
+  isCompleted: boolean;
 }
 
 export interface LeagueCardContainerProps {

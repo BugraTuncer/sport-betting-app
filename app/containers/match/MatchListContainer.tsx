@@ -50,6 +50,7 @@ export default function MatchListContainer({ matches }: MatchListContainerProps)
           leagueTitle={league}
           matches={leagueMatches}
           commenceTime={time}
+          isCompleted={new Date(time) < new Date()}
         />
       ))
     );

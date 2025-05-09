@@ -26,7 +26,7 @@ const storage = typeof window !== 'undefined' ? createWebStorage('local') : crea
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['bet', 'bookmaker', 'sport'],
+  whitelist: ['bet', 'bookmaker', 'sport', 'auth'],
 };
 
 const rootReducer = combineReducers({

@@ -85,8 +85,10 @@ function AppContent() {
 
   return (
     <>
-      <AppHeader />
-      <Outlet />
+      <ProtectedRoute>
+        <AppHeader />
+        <Outlet />
+      </ProtectedRoute>
     </>
   );
 }
