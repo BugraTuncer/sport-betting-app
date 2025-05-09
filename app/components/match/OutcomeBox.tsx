@@ -27,17 +27,16 @@ export const OutcomeBox = ({
       }
       onClick={onClick}
     >
-      <motion.div
-        animate={{
+      <div
+        style={{
           backgroundColor: selected ? '#d1b93e' : 'transparent',
         }}
-        transition={{ duration: 0.2 }}
         className={classNames(
           'text-lg font-bold  w-full h-full text-center rounded-tl-md rounded-tr-md'
         )}
       >
         {outcome.price.toFixed(2)}
-      </motion.div>
+      </div>
       <div className="text-xs text-gray-600 bg-gray-300 px-1 py-0.5  w-full text-center whitespace-nowrap rounded-bl-md rounded-br-md ">
         {label}
       </div>

@@ -87,7 +87,7 @@ function AppContent() {
   );
 }
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export default function App() {
   return (
     <html lang="en">
       <head>
@@ -97,23 +97,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <AppContent />
+          </PersistGate>
+        </Provider>
         <ScrollRestoration />
         <Scripts />
       </body>
     </html>
-  );
-}
-
-export default function App() {
-  return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <Layout>
-          <AppContent />
-        </Layout>
-      </PersistGate>
-    </Provider>
   );
 }
 
@@ -134,18 +126,30 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main className="pt-16 p-4 container mx-auto flex flex-col items-center justify-center gap-8">
-      <h1 className="text-2xl font-bold">{message}</h1>
-      <p className="text-gray-500">{details}</p>
-      <img src="404-page.png" alt="404" className="w-1/4" />
-      <Link to="/" className="bg-primary text-white px-4 py-2 rounded-md">
-        Go To Home
-      </Link>
-      {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
-          <code>{stack}</code>
-        </pre>
-      )}
-    </main>
+    <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <main className="pt-16 p-4 container mx-auto flex flex-col items-center justify-center gap-8">
+          <h1 className="text-2xl font-bold">{message}</h1>
+          <p className="text-gray-500">{details}</p>
+          <img src="404-page.png" alt="404" className="w-1/4" />
+          <Link to="/" className="bg-primary text-white px-4 py-2 rounded-md">
+            Go To Home
+          </Link>
+          {stack && (
+            <pre className="w-full p-4 overflow-x-auto">
+              <code>{stack}</code>
+            </pre>
+          )}
+        </main>
+        <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
   );
 }

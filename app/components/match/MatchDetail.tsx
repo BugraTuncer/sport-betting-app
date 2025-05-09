@@ -38,7 +38,7 @@ const MatchDetail = ({
             <div
               className="flex flex-col mb-6 h-20 g-5 overflow-hidden text-center"
               style={{
-                backgroundImage: 'url(/football-background.png)',
+                backgroundImage: 'url(/match-detail-background.png)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
@@ -65,15 +65,17 @@ const MatchDetail = ({
             <div>
               <p className="text-lg font-semibold p-3">Match Result</p>
               <div className="flex gap-2 p-3">
-                <OutcomeBox
-                  label="MR 1"
-                  outcome={homeOutcome}
-                  selected={isSelectedMatch(bets, id, homeOutcome?.name, false)}
-                  onClick={() =>
-                    homeOutcome &&
-                    onSelectOutcome(id, homeOutcome, home_team, away_team, commence_time)
-                  }
-                />
+                {homeOutcome && (
+                  <OutcomeBox
+                    label="MR 1"
+                    outcome={homeOutcome}
+                    selected={isSelectedMatch(bets, id, homeOutcome?.name, false)}
+                    onClick={() =>
+                      homeOutcome &&
+                      onSelectOutcome(id, homeOutcome, home_team, away_team, commence_time)
+                    }
+                  />
+                )}
                 {drawOutcome && (
                   <OutcomeBox
                     label="MR X"
@@ -85,15 +87,17 @@ const MatchDetail = ({
                     }
                   />
                 )}
-                <OutcomeBox
-                  label="MR 2"
-                  outcome={awayOutcome}
-                  selected={isSelectedMatch(bets, id, awayOutcome?.name, false)}
-                  onClick={() =>
-                    awayOutcome &&
-                    onSelectOutcome(id, awayOutcome, home_team, away_team, commence_time)
-                  }
-                />
+                {awayOutcome && (
+                  <OutcomeBox
+                    label="MR 2"
+                    outcome={awayOutcome}
+                    selected={isSelectedMatch(bets, id, awayOutcome?.name, false)}
+                    onClick={() =>
+                      awayOutcome &&
+                      onSelectOutcome(id, awayOutcome, home_team, away_team, commence_time)
+                    }
+                  />
+                )}
               </div>
             </div>
 
@@ -129,7 +133,7 @@ const MatchDetail = ({
                   {spreadsOutcomes.map((outcome) => (
                     <OutcomeBox
                       key={outcome.name + outcome.point}
-                      label={`H MS ${outcome.name === homeOutcome.name ? '1' : outcome.name === awayOutcome.name ? '2' : 'X'} `}
+                      label={`H MS ${outcome.name === homeOutcome?.name ? '1' : outcome.name === awayOutcome?.name ? '2' : 'X'} `}
                       outcome={outcome}
                       selected={isSelectedMatch(bets, id, outcome.name, true)}
                       onClick={() =>

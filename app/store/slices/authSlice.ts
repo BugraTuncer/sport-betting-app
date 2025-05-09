@@ -6,11 +6,16 @@ import {
   onAuthStateChanged,
   signInWithPopup,
 } from 'firebase/auth';
+import type { User } from 'firebase/auth';
 import { auth, googleProvider } from '../../config/firebase';
 import { clearBasket } from './betSlice';
 
+interface UserData {
+  email: string | null;
+}
+
 interface AuthState {
-  user: any | null;
+  user: UserData | null;
   loading: boolean;
   error: string | null;
 }
@@ -21,12 +26,19 @@ const initialState: AuthState = {
   error: null,
 };
 
+const extractUserData = (user: User | null): UserData | null => {
+  if (!user) return null;
+  return {
+    email: user.email,
+  };
+};
+
 export const signUp = createAsyncThunk(
   'auth/signUp',
   async ({ email, password }: { email: string; password: string }, { rejectWithValue }) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      return userCredential.user;
+      return extractUserData(userCredential.user);
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : 'An error occurred');
     }
@@ -38,7 +50,7 @@ export const signIn = createAsyncThunk(
   async ({ email, password }: { email: string; password: string }, { rejectWithValue }) => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      return userCredential.user;
+      return extractUserData(userCredential.user);
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : 'An error occurred');
     }
@@ -57,7 +69,7 @@ export const logout = createAsyncThunk('auth/logout', async (_, { dispatch, reje
 export const initAuth = createAsyncThunk('auth/init', (_, { dispatch }) => {
   return new Promise<void>((resolve) => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      dispatch(setUser(user));
+      dispatch(setUser(extractUserData(user)));
       resolve();
     });
     return unsubscribe;
@@ -69,7 +81,7 @@ export const signInWithGoogle = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const userCredential = await signInWithPopup(auth, googleProvider);
-      return userCredential.user;
+      return extractUserData(userCredential.user);
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : 'An error occurred');
     }
@@ -81,7 +93,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      state.user = action.payload;
+      state.user = extractUserData(action.payload);
       state.loading = false;
     },
     clearError: (state) => {

@@ -55,7 +55,8 @@ export interface MatchCardProps {
     outcome: Outcome,
     home_team: string,
     away_team: string,
-    commence_time: string
+    commence_time: string,
+    bookmakerTitles: string[]
   ) => void;
   bookmakerTitles: string[];
   bets: Bet[];
@@ -67,13 +68,13 @@ export interface MatchDetailProps {
   matchOutcomes: {
     matchBookmaker: Bookmaker;
     outcomes: Outcome[];
-    homeOutcome: Outcome;
-    awayOutcome: Outcome;
+    homeOutcome: Outcome | undefined;
+    awayOutcome: Outcome | undefined;
     drawOutcome: Outcome | undefined;
-    totalsMarket?: Market;
-    totalsOutcomes?: Outcome[];
-    spreadsMarket?: Market;
-    spreadsOutcomes?: Outcome[];
+    totalsMarket: Market | undefined;
+    totalsOutcomes: Outcome[];
+    spreadsMarket: Market | undefined;
+    spreadsOutcomes: Outcome[];
   };
   bets: Bet[];
   showWarningModal: boolean;

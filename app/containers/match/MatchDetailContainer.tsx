@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import MatchDetail from '~/components/match/MatchDetail';
+import { logMatchDetailView } from '~/config/firebase';
 import type { Outcome } from '~/models/matches';
 import type { RootState } from '~/store';
 import { handleOutcomeSelection, findMatchOutcomes } from '~/utils/matchUtils';
@@ -16,6 +17,13 @@ const MatchDetailContainer = () => {
     const matchInfos = localStorage.getItem('matchInfos');
     const matchInfosParsed = matchInfos ? JSON.parse(matchInfos) : null;
     setMatchInfos(matchInfosParsed);
+    if (matchInfosParsed) {
+      logMatchDetailView({
+        match_id: matchInfosParsed.id,
+        match_name: `${matchInfosParsed.home_team} - ${matchInfosParsed.away_team}`,
+        league: matchInfosParsed.sport_title,
+      });
+    }
   }, []);
 
   const matchOutcomes = useMemo(() => {
