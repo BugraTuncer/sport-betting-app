@@ -46,8 +46,8 @@ A detailed breakdown of the system’s core logic, features, and behaviors:
 
 ## Navigation & Routing
 
-• Custom 404 page implemented – redirects users to a friendly error screen when visiting non-existent routes.
-• App-wide protected routes – routes require a valid Firebase token; otherwise, user is redirected.
+• Custom 404 page implemented – redirects users to a friendly error screen when visiting non-existent routes.  
+• App-wide protected routes – routes require a valid Firebase token; otherwise, user is redirected.  
 
 ## Authentication
 
@@ -56,15 +56,15 @@ A detailed breakdown of the system’s core logic, features, and behaviors:
 
 ## Match Listing & Sports Navigation
 
-• After login, users see matches categorized by selected sport.
-• Each sport fetches its own set of matches dynamically from the API.
-• Sports selector is implemented as a horizontal slider (scrollable).
-• Past match handling: Matches with a start time in the past are visually faded, indicating that betting is no longer available.
-• Match list supports searching by match/team name using a debounced input for performance.
-• Matches are grouped by league and match time (e.g., Today, Tomorrow, or full date).
-• Each match card:
-• Displays odds for match result, over/under, and handicap, showing the highest odds across all bookmakers.
-• Includes sport-specific icon based on the selected sport.
+• After login, users see matches categorized by selected sport.  
+• Each sport fetches its own set of matches dynamically from the API.  
+• Sports selector is implemented as a horizontal slider (scrollable).  
+• Past match handling: Matches with a start time in the past are visually faded, indicating that betting is no longer available.  
+• Match list supports searching by match/team name using a debounced input for performance.  
+• Matches are grouped by league and match time (e.g., Today, Tomorrow, or full date).  
+• Each match card:  
+• Displays odds for match result, over/under, and handicap, showing the highest odds across all bookmakers.  
+• Includes sport-specific icon based on the selected sport.  
 
 ## Bet Basket (Bet Slip)
 
