@@ -59,6 +59,7 @@ A detailed breakdown of the system’s core logic, features, and behaviors:
 • After login, users see matches categorized by selected sport.
 • Each sport fetches its own set of matches dynamically from the API.
 • Sports selector is implemented as a horizontal slider (scrollable).
+• Past match handling: Matches with a start time in the past are visually faded, indicating that betting is no longer available.
 • Match list supports searching by match/team name using a debounced input for performance.
 • Matches are grouped by league and match time (e.g., Today, Tomorrow, or full date).
 • Each match card:
