@@ -9,13 +9,13 @@ import {
   useNavigate,
 } from 'react-router';
 import { Provider, useDispatch, useSelector } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor, type AppDispatch, type RootState } from './store';
 import { initAuth, logout } from './store/slices/authSlice';
 import type { Route } from './+types/root';
 import './app.css';
 import Button from './components/common/Button';
 import { useEffect } from 'react';
+import { PersistGate } from './components/common/PersistGateWrapper';
 
 export const links: Route.LinksFunction = () => [
   { rel: 'icon', type: 'image/x-icon', href: '/favicon1.ico' },
