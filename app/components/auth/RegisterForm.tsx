@@ -3,12 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import Button from '~/components/common/Button';
 import Input from '~/components/common/Input';
 import type { RegisterFormProps } from '~/models/auth';
+import EyeIcon from 'public/icons/EyeIcon';
 
 export default function RegisterForm({ onSubmit, error, loading }: RegisterFormProps) {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     confirmPassword: '',
+  });
+  const [showPassword, setShowPassword] = useState({
+    password: false,
+    confirmPassword: false,
   });
   const navigate = useNavigate();
 
@@ -47,33 +52,58 @@ export default function RegisterForm({ onSubmit, error, loading }: RegisterFormP
               <label htmlFor="password" className="sr-only">
                 Password
               </label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="new-password"
-                required
-                className="w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:border-primary focus:outline-none rounded-md"
-                placeholder="Password"
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  name="password"
+                  type={showPassword.password ? 'text' : 'password'}
+                  autoComplete="new-password"
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:border-primary focus:outline-none rounded-md"
+                  placeholder="Password"
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                />
+                <Button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+                  onClick={() =>
+                    setShowPassword({ ...showPassword, password: !showPassword.password })
+                  }
+                >
+                  <EyeIcon isVisible={showPassword.password} />
+                </Button>
+              </div>
             </div>
             <div>
               <label htmlFor="confirm-password" className="sr-only">
                 Confirm Password
               </label>
-              <Input
-                id="confirm-password"
-                name="confirmPassword"
-                type="password"
-                autoComplete="new-password"
-                required
-                className="w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:border-primary focus:outline-none rounded-md"
-                placeholder="Confirm Password"
-                value={formData.confirmPassword}
-                onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-              />
+              <div className="relative">
+                <Input
+                  id="confirm-password"
+                  name="confirmPassword"
+                  type={showPassword.confirmPassword ? 'text' : 'password'}
+                  autoComplete="new-password"
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:border-primary focus:outline-none rounded-md"
+                  placeholder="Confirm Password"
+                  value={formData.confirmPassword}
+                  onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                />
+                <Button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+                  onClick={() =>
+                    setShowPassword({
+                      ...showPassword,
+                      confirmPassword: !showPassword.confirmPassword,
+                    })
+                  }
+                >
+                  <EyeIcon isVisible={showPassword.confirmPassword} />
+                </Button>
+              </div>
             </div>
           </div>
 

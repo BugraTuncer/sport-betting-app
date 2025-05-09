@@ -27,6 +27,9 @@ export interface BetSlipProps {
   onRemoveBet: (eventId: string) => void;
   onUndo: () => void;
   undoMatch: { bet: BetSlice; timer: NodeJS.Timeout } | null;
+  handlePlayNow: () => void;
+  showSuccessModal: boolean;
+  setShowSuccessModal: (show: boolean) => void;
 }
 
 export interface BetSlipListProps {

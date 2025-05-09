@@ -51,14 +51,17 @@ function AppHeader() {
           Sports Betting
         </p>
         <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
-          <p className="text-white text-xs sm:text-sm">{user?.email?.split('@')[0]}</p>
           {user ? (
-            <Button
-              onClick={() => handleLogout()}
-              className="text-xs sm:text-sm text-white rounded-2xl border border-white px-2 py-1 cursor-pointer"
-            >
-              Logout
-            </Button>
+            <>
+              <p className="text-white text-xs sm:text-sm">{user?.email?.split('@')[0]}</p>
+
+              <Button
+                onClick={() => handleLogout()}
+                className="text-xs sm:text-sm text-white rounded-2xl border border-white px-2 py-1 cursor-pointer"
+              >
+                Logout
+              </Button>
+            </>
           ) : (
             <Button
               onClick={() => navigate('/login')}

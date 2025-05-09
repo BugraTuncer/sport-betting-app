@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { BetSlipProps } from '~/models/bets';
 import Button from '../common/Button';
@@ -18,6 +18,9 @@ const BetSlip: React.FC<BetSlipProps> = ({
   onRemoveBet,
   onUndo,
   undoMatch,
+  handlePlayNow,
+  showSuccessModal,
+  setShowSuccessModal,
 }) => {
   return (
     <>
@@ -90,10 +93,7 @@ const BetSlip: React.FC<BetSlipProps> = ({
                       <div onClick={() => setShowConfirmModal(true)} className="cursor-pointer">
                         <DeleteIcon width={30} height={30} color="black" />
                       </div>
-                      <Button
-                        style={{ marginTop: '10px', width: '200px' }}
-                        onClick={() => console.log('PLAY NOW')}
-                      >
+                      <Button style={{ marginTop: '10px', width: '200px' }} onClick={handlePlayNow}>
                         PLAY NOW
                       </Button>
                     </div>
@@ -111,6 +111,15 @@ const BetSlip: React.FC<BetSlipProps> = ({
         onConfirm={onClearBasket}
         title="Delete Bets"
         message="Are you sure you want to delete all bets?"
+      />
+
+      <ConfirmationModal
+        isOpen={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+        onConfirm={() => setShowSuccessModal(false)}
+        title="Success"
+        message="Your bet has been successfully placed!"
+        showButtons={false}
       />
     </>
   );

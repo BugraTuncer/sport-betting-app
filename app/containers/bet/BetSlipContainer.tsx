@@ -12,6 +12,14 @@ const BetSlipContainer = () => {
   const dispatch = useDispatch();
   const [undoMatch, setUndoMatch] = useState<{ bet: BetSlice; timer: NodeJS.Timeout } | null>(null);
 
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  const handlePlayNow = () => {
+    setShowSuccessModal(true);
+    dispatch(clearBasket());
+    setIsOpen(false);
+  };
+
   const totalOdds = useMemo(() => {
     return bets.reduce((acc, curr) => acc * curr.outcome.price, 1);
   }, [bets]);
@@ -51,6 +59,9 @@ const BetSlipContainer = () => {
       onRemoveBet={handleRemoveBet}
       onUndo={handleUndo}
       undoMatch={undoMatch}
+      handlePlayNow={handlePlayNow}
+      showSuccessModal={showSuccessModal}
+      setShowSuccessModal={setShowSuccessModal}
     />
   );
 };
