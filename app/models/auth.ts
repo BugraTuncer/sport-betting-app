@@ -10,3 +10,13 @@ export interface RegisterFormProps {
   error: string | null;
   loading: boolean;
 }
+
+export interface UserData {
+  email: string | null;
+}
+
+export interface AuthState {
+  user: UserData | null;
+  loading: boolean;
+  error: string | null;
+}

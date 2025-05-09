@@ -10,16 +10,7 @@ import type { User } from 'firebase/auth';
 import { auth, googleProvider } from '../../config/firebase';
 import { clearBasket } from './betSlice';
 import { setSelectedSport } from './sportSlice';
-
-interface UserData {
-  email: string | null;
-}
-
-interface AuthState {
-  user: UserData | null;
-  loading: boolean;
-  error: string | null;
-}
+import type { AuthState, UserData } from '~/models/auth';
 
 const initialState: AuthState = {
   user: null,

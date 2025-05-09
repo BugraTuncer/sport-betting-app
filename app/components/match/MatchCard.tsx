@@ -16,6 +16,7 @@ export const MatchCard = ({
   if (!matchOutcomes) return null;
 
   const { homeOutcome, awayOutcome, drawOutcome, totalsOutcomes } = matchOutcomes;
+
   return (
     <div key={id} className="mb-2.5 rounded bg-white shadow-sm overflow-hidden">
       <div className="p-2 sm:p-4 gap-2 flex flex-col sm:flex-row justify-between">
@@ -39,7 +40,8 @@ export const MatchCard = ({
             outcome={homeOutcome}
             selected={!!homeOutcome && isSelectedMatch(bets, id, homeOutcome.name, false)}
             onClick={() =>
-              homeOutcome && onSelectOutcome(id, homeOutcome, home_team, away_team, commence_time)
+              homeOutcome &&
+              onSelectOutcome(id, homeOutcome, home_team, away_team, commence_time, bookmakerTitles)
             }
           />
           <OutcomeBox
@@ -47,7 +49,8 @@ export const MatchCard = ({
             outcome={drawOutcome}
             selected={!!drawOutcome && isSelectedMatch(bets, id, drawOutcome.name, false)}
             onClick={() =>
-              drawOutcome && onSelectOutcome(id, drawOutcome, home_team, away_team, commence_time)
+              drawOutcome &&
+              onSelectOutcome(id, drawOutcome, home_team, away_team, commence_time, bookmakerTitles)
             }
           />
           <OutcomeBox
@@ -55,7 +58,8 @@ export const MatchCard = ({
             outcome={awayOutcome}
             selected={!!awayOutcome && isSelectedMatch(bets, id, awayOutcome.name, false)}
             onClick={() =>
-              awayOutcome && onSelectOutcome(id, awayOutcome, home_team, away_team, commence_time)
+              awayOutcome &&
+              onSelectOutcome(id, awayOutcome, home_team, away_team, commence_time, bookmakerTitles)
             }
           />
           {totalsOutcomes.map((outcome) => (
@@ -64,7 +68,9 @@ export const MatchCard = ({
               label={`${outcome.point} ${outcome.name}`}
               outcome={outcome}
               selected={isSelectedMatch(bets, id, outcome.name, true)}
-              onClick={() => onSelectOutcome(id, outcome, home_team, away_team, commence_time)}
+              onClick={() =>
+                onSelectOutcome(id, outcome, home_team, away_team, commence_time, bookmakerTitles)
+              }
             />
           ))}
         </div>
