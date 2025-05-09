@@ -1,22 +1,25 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router';
 import { useSelector } from 'react-redux';
 import LoadingSpinner from './LoadingSpinner';
-import type { RootState } from '~/store';
+import type { RootState } from '../../store';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
-export default function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { user, loading } = useSelector((state: RootState) => state.auth);
+const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+  const user = useSelector((state: RootState) => state.auth.user);
+  const location = useLocation();
 
-  if (loading) {
-    return <LoadingSpinner />;
+  if (!user && location.pathname !== '/login') {
+    return <Navigate to="/login" replace />;
   }
 
-  if (!user) {
-    return <Navigate to="/login" />;
+  if (user && location.pathname === '/login') {
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;
-}
+};
+
+export default ProtectedRoute;

@@ -54,7 +54,7 @@ export default function SportsNav({ onSportSelect, selectedSport }: SportNavProp
 
   return (
     <nav className="bg-primary-dark p-4 shadow-lg">
-      <div className="container mx-auto">
+      <div className="container mx-auto justify-center flex">
         <div
           ref={scrollContainerRef}
           className="flex space-x-4 overflow-x-auto scrollbar-hide pb-2 cursor-grab active:cursor-grabbing"

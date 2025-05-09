@@ -25,10 +25,11 @@ export default function LoginContainer() {
   const handleGoogleLogin = useCallback(async () => {
     try {
       await dispatch(signInWithGoogle()).unwrap();
+      navigate('/');
     } catch (error) {
       console.error('Google login failed:', error);
     }
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   useEffect(() => {
     dispatch(clearError());

@@ -16,6 +16,7 @@ import './app.css';
 import Button from './components/common/Button';
 import { useEffect } from 'react';
 import { PersistGate } from './components/common/PersistGateWrapper';
+import ProtectedRoute from './components/common/ProtectedRoute';
 
 export const links: Route.LinksFunction = () => [
   { rel: 'icon', type: 'image/x-icon', href: '/favicon1.ico' },
@@ -80,10 +81,10 @@ function AppContent() {
   }, [dispatch]);
 
   return (
-    <>
+    <ProtectedRoute>
       <AppHeader />
       <Outlet />
-    </>
+    </ProtectedRoute>
   );
 }
 

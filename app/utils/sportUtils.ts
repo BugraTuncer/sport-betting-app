@@ -6,7 +6,18 @@ interface GroupedSport {
 }
 
 export const getGroupedSports = (sports: Sport[]): GroupedSport[] => {
+  const excludedSports = [
+    'Aussie Rules',
+    'Baseball',
+    'Boxing',
+    'Golf',
+    'Lacrosse',
+    'Mixed Martial Arts',
+    'Politics',
+  ];
+
   return sports
+    .filter((sport) => !excludedSports.includes(sport.group))
     .map((sport) => ({
       id: sport.key,
       title: sport.group,

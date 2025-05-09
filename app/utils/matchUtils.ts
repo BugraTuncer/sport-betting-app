@@ -144,16 +144,12 @@ export const getSportIcon = (sport: string) => {
       return '🤾';
     case 'Snooker':
       return '🎱';
-    case 'Boxing':
-      return '🥊';
     case 'Golf':
       return '🏌️‍♂️';
     case 'Tennis':
       return '🎾';
     case 'Rugby League':
       return '🏉';
-    case 'Mixed Martial Arts':
-      return '🥊';
     default:
       return '🎲';
   }
