@@ -32,7 +32,7 @@ The app should now be running at http://localhost:5173
 
 ## Live Demo
 
-https://sports-betting-app.vercel.app
+https://sport-betting-app-three.vercel.app/
 
 ### Project Purpose
 

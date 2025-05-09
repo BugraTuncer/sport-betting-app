@@ -81,10 +81,10 @@ function AppContent() {
   }, [dispatch]);
 
   return (
-    <ProtectedRoute>
+    <>
       <AppHeader />
       <Outlet />
-    </ProtectedRoute>
+    </>
   );
 }
 

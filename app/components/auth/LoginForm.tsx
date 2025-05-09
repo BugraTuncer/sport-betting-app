@@ -76,7 +76,9 @@ export default function LoginForm({ onSubmit, error, loading, onGoogleLogin }: L
             <Button disabled={loading} onClick={handleSubmit}>
               {loading ? 'Loading...' : 'Login'}
             </Button>
-            <Button onClick={() => navigate('/register')}>Dont have an account?</Button>
+            <Button type="button" onClick={() => navigate('/register')}>
+              Dont have an account?
+            </Button>
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-300" />
@@ -87,6 +89,7 @@ export default function LoginForm({ onSubmit, error, loading, onGoogleLogin }: L
             </div>
             <Button
               onClick={onGoogleLogin}
+              type="button"
               className="flex items-center justify-center gap-2 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 p-2 rounded-md cursor-pointer"
             >
               <GoogleIcon />

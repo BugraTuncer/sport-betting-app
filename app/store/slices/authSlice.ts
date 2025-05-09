@@ -9,6 +9,7 @@ import {
 import type { User } from 'firebase/auth';
 import { auth, googleProvider } from '../../config/firebase';
 import { clearBasket } from './betSlice';
+import { setSelectedSport } from './sportSlice';
 
 interface UserData {
   email: string | null;
@@ -61,6 +62,7 @@ export const logout = createAsyncThunk('auth/logout', async (_, { dispatch, reje
   try {
     await signOut(auth);
     dispatch(clearBasket());
+    dispatch(setSelectedSport('Soccer'));
   } catch (error) {
     return rejectWithValue(error instanceof Error ? error.message : 'Bir hata oluştu');
   }

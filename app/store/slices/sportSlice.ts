@@ -15,6 +15,9 @@ const sportSlice = createSlice({
     setSelectedSport: (state, action: PayloadAction<string>) => {
       state.selectedSport = action.payload;
     },
+    clearSelectedSport: (state) => {
+      state.selectedSport = 'Soccer';
+    },
   },
 });
 
